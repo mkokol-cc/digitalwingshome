@@ -1,19 +1,19 @@
 {
     "name": "Demo DiFit",
     "short_name": "Demo DiFit",
-    "start_url": "/",
+    "start_url": "https://digitalwings.dev.ar/difit/demo/view/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
     "orientation": "portrait",
     "icons": [
       {
-        "src": "/df.png",
+        "src": "/difit/demo/df.png",
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-        "src": "/df.png",
+        "src": "/difit/demo/df.png",
         "sizes": "512x512",
         "type": "image/png"
       }
