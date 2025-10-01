@@ -19,13 +19,14 @@ body {
     align-items: center;
     min-height: 100vh;
     height: 100%; /* Ahora body toma el 100% del html */
-    overflow-y: hidden; 
+    overflow: auto; 
 
     /* 1. Establecer el SVG como imagen de fondo */
     background-image: url('background.svg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    background-attachment: fixed;
     min-height: 100vh;
     margin: 0;
 }
@@ -70,7 +71,7 @@ body {
 /* Description Sections */
 .description {
     flex: 1;
-    min-width: 300px;
+    /*min-width: 300px;*/
     padding: 20px;
     background: #fff;
     border-radius: 8px;
