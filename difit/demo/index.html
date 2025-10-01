@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo DiFit</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Demo DiFit">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Mockup with iFrame (Desktop Only) -->
+        <div class="mobile-mockup">
+            <iframe src="https://github.com/mkokol-cc" title="App Demo"></iframe>
+        </div>
+
+
+        <!-- Description Sections -->
+        <div class="description">
+            <h2>Acerca de la Demo</h2>
+            <p>Explorá la experiencia completa de la app como si fueras un miembro del gimnasio: accedé a tus rutinas y dietas personalizadas, seguí tus marcas personales y tu progreso, interactuá en el chat grupal, y descubrí posteos y perfiles de la comunidad.</p>
+            <h2 style="margin-top: 20px;">Funciones</h2>
+            <p>🔹Los posteos y marcas que veas son de ejemplo.</p>
+            <p>🔹No vas a poder subir fotos, registrar nuevas marcas ni editar tu perfil.</p>
+            <p>🔹Algunas funciones avanzadas (cronómetro de ejercicios, gráficas de progreso y marcas privadas) estarán disponibles en la versión completa.</p>
+            <p style="margin-top: 10px;">👉 Esta demo es solo una simulación para que conozcas cómo funcionará el producto final.</p>
+        
+                    <!-- Description Sections -->
+            <div class="mobile-description">
+                <h2 style="margin-top: 35px;text-align: center;">Lo estas viendo desde tu celu?</h2>
+                <!-- Fullscreen Button (Mobile Only) -->
+                <h5 style="text-align: center;">ANDROID</h5>
+                <button class="fullscreen-button" style="width: 100%;" onclick="openFullscreen()">Ver Demo</button>
+                <h5 style="margin-bottom: 5px;text-align: center;">iOS</h5>
+                <p>1️⃣Tocá el botón de “Compartir” (es el cuadrado con una flechita hacia arriba que está abajo en la pantalla).</p>
+                <p>2️⃣En el menú que se abre, buscá la opción “Agregar a pantalla de inicio” y tocála.</p>
+                <p style="margin-bottom: 5px;">3️⃣Te va a aparecer una ventanita con el nombre de la app y el ícono. Solo tenés que tocar “Agregar” arriba a la derecha.</p>
+                <p>¡Listo! 🎉 Ahora vas a tener un ícono en tu pantalla y podras explorar la demo.</p>
+            </div>
+        
+        
+        </div>
+
+
+
+    </div>
+
+    <script>
+        function openFullscreen() {
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://github.com/mkokol-cc';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            document.body.appendChild(iframe);
+
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) { /* Safari */
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) { /* IE11 */
+                iframe.msRequestFullscreen();
+            }
+
+            // Remove iframe when exiting fullscreen
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    document.body.removeChild(iframe);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
