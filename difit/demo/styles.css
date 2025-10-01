@@ -60,8 +60,11 @@ body {
     /*height: 568px;*/
     /*position: relative;*/
     border: none;
+    /*
     width: 240px;
-    height: 425px;
+    height: 425px;*/
+    width: 305px;
+    height: 550px;
 }
 
 /* Description Sections */
@@ -80,13 +83,13 @@ body {
 }
 
 .description h2, .mobile-description h2 {
-    font-size: 1rem;
+    font-size: 1.4rem;
     margin-bottom: 15px;
     color: #222;
 }
 
 .description p , .mobile-description p {
-    font-size: .7rem;
+    font-size: 1rem;
     color: #555;
 }
 
