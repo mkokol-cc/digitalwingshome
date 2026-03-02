@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente para Decisiones Empresariales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --card: rgba(17, 24, 39, 0.92);
+            --text: #e5e7eb;
+            --accent: #3b82f6;          /* Azul profesional enterprise */
+            --accent-dark: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.12);
+            --overlay: linear-gradient(to bottom, rgba(15,17,23,0.88), rgba(15,17,23,0.96));
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+        header {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 5rem 1.5rem 6rem;
+            overflow: hidden;
+            
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1551288049-b01e1e8d8d0e?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat;
+            opacity: 0.08;
+            z-index: 0;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        header > * { position: relative; z-index: 2; }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.6rem, 6vw, 4.2rem);
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+        .subtitle {
+            font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+            max-width: 740px;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            background: var(--accent);
+            color: white;
+            padding: 0.9rem 2.4rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--accent-glow);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+        .outline-btn {
+            font-size: 1.05rem;
+            font-weight: 500;
+            background: transparent;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            padding: 0.85rem 2.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .outline-btn:hover {
+            background: rgba(59,130,246,0.1);
+            color: white;
+        }
+        section {
+            padding: 6rem 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .section-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.06;
+            z-index: -1;
+        }
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.1rem, 5vw, 2.8rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #ffffff;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.6rem;
+        }
+        .card {
+            background: var(--card);
+            padding: 1.8rem 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(59,130,246,0.08);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+        }
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+        }
+        .card p {
+            font-size: 1.02rem;
+            opacity: 0.92;
+        }
+        ul{
+            list-style-type: none;
+        }
+        li {
+            margin: 0.9rem 0;
+            font-size: 1.02rem;
+            position: relative;
+            padding-left: 1.6rem;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .pricing-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin-top: 3rem;
+        }
+        .price-card {
+            background: linear-gradient(145deg, #1f2937, #111827);
+            padding: 2.2rem 1.8rem;
+            border-radius: 16px;
+            width: 320px;
+            border: 1px solid rgba(59,130,246,0.1);
+            transition: all 0.3s ease;
+        }
+        .price-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 32px rgba(59,130,246,0.15);
+        }
+        .price {
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: white;
+            margin: 0.7rem 0;
+        }
+        .price small { font-size: 1rem; opacity: 0.8; color: #9ca3af; }
+        footer {
+            text-align: center;
+            padding: 4rem 1.5rem 2rem;
+            font-size: 0.92rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        @media (max-width: 768px) {
+            header { min-height: 100vh; padding: 4rem 1rem 5rem; }
+            section { padding: 5rem 1rem; }
+            h1 { font-size: 2.6rem; line-height: 1.1}
+            h2 { font-size: 2.2rem; line-height: 1.1}
+            .price-card { width: 100%; max-width: 360px; }
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            text-decoration: none;
+            transition: all 0.3s ease-out;
+        }
+
+        .whatsapp-float:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            background-color: #128C7E;
+        }
+
+        .brand-logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+        }
+        .brand-logo img { height: 28px; width: auto; }
+        .brand-logo span {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .hero-image-section {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image-wrapper {
+    max-width: 1100px;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(59,130,246,0.15);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hero-image-wrapper:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+.hero-image-wrapper img {
+    width: 100%;
+    display: block;
+}
+
+
+
+
+.picture-overlay {
+  position: relative;
+  display: inline-block;
+}
+
+.picture-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  /* Aquí aplicas el gradiente que quieras */
+  background: linear-gradient(to bottom, #0f111700 0%, #1f2937 75%);
+}
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand-logo">
+        <img src="logodw.png" alt="DigitalWings">
+        <span>DigitalWings</span>
+    </div>
+    <h1 style="margin-top: 2rem;">Asistente de Inteligencia Artificial<br>para Decisiones Empresariales</h1>
+    <p class="subtitle">
+        Una IA que se conecta con los datos de tu negocio, analiza lo que está pasando en tiempo real
+        y te dice qué hacer antes de que aparezcan los problemas.
+        No necesitás saber analizar datos. Solo necesitás hacer preguntas.
+    </p>
+    <a href="https://web.whatsapp.com/send/?phone=5403534279315&text=Hola%2C+estoy+interesado+en+el+Asistente+de+Inteligencia+Artificial+para+decisiones+empresariales+y+quisiera+obtener+m%C3%A1s+detalles+sobre+su+funcionamiento+y+c%C3%B3mo+empezar.&type=phone_number&app_absent=0" class="btn" target="_blank" rel="noopener noreferrer">Quiero mi asistente</a>
+</header>
+
+<div style="background: linear-gradient(to bottom, #0f111700 0%, #0f1117 10%);">
+<section style="margin-top: 0; padding-top: 0;">
+    <div class="section-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-b01e1e8d8d0e?auto=format&fit=crop&q=80&w=2000');"></div>
+    <h2>¿Seguís decidiendo a ciegas?</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>No sabés cuánto estás ganando realmente</h3>
+            <p>La IA detecta márgenes ocultos, desvíos y variaciones que no son visibles a simple vista.</p>
+        </div>
+        <div class="card">
+            <h3>Los problemas aparecen demasiado tarde</h3>
+            <p>El sistema analiza constantemente tu operación y alerta antes de que el impacto sea grande.</p>
+        </div>
+        <div class="card">
+            <h3>Dependés solo de tu intuición</h3>
+            <p>Ahora podés respaldar cada decisión con análisis inteligente en tiempo real.</p>
+        </div>
+    </div>
+</section>
+</div>
+<!--
+<section class="hero-image-section">
+    <div class="hero-image-wrapper">
+        <img src="demo.png" alt="Dashboard del asistente de inteligencia artificial empresarial">
+    </div>
+</section>
+-->
+<section style="background: #1f2937; padding: 0;">
+    <div class="section-bg" style="background-image: url('https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=2000');"></div>
+    <div class="picture-overlay">
+        <img src="demo.png" style="width: 100%;" alt="Dashboard del asistente de inteligencia artificial empresarial">
+    </div>
+    <div style="padding: 0 1.5rem 6rem; margin-top: -8rem;
+    position: relative;
+    z-index: 10;">
+        <h2>Cómo funciona</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>1. Se conecta a tus datos</h3>
+                <p>Integra tu sistema actual o permite cargar información de forma segura.</p>
+            </div>
+            <div class="card">
+                <h3>2. Analiza en tiempo real</h3>
+                <p>Procesa ventas, costos, márgenes, comportamiento y tendencias constantemente.</p>
+            </div>
+            <div class="card">
+                <h3>3. Te responde y te alerta</h3>
+                <p>Podés preguntarle cualquier cosa sobre tu negocio y recibir respuestas claras y accionables.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <h2>No es solo un dashboard</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Interpreta los datos</h3>
+            <p>No muestra números sueltos. Detecta patrones y anomalías automáticamente.</p>
+        </div>
+        <div class="card">
+            <h3>Aprende del comportamiento</h3>
+            <p>Identifica cambios en tu negocio y ajusta el análisis según su evolución.</p>
+        </div>
+        <div class="card">
+            <h3>Responde en lenguaje natural</h3>
+            <p>Preguntale: “¿Estoy vendiendo más pero ganando menos?” y obtené una respuesta clara.</p>
+        </div>
+    </div>
+</section>
+
+
+<section style="background: linear-gradient(to bottom, #0f1117, #1f2937);">
+    <h2>Tu asistente analiza 24/7</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Alertas inteligentes preventivas</h3>
+            <p>Detecta riesgos financieros y operativos antes de que afecten tu rentabilidad.</p>
+        </div>
+        <div class="card">
+            <h3>Recomendaciones concretas</h3>
+            <p>Te sugiere acciones prácticas para mejorar eficiencia y productividad.</p>
+        </div>
+        <div class="card">
+            <h3>Indicador de salud empresarial</h3>
+            <p>Un resumen simple que refleja el estado financiero y operativo de tu organización.</p>
+        </div>
+        <div class="card">
+            <h3>Simulación de escenarios</h3>
+            <p>Consultá: “¿Qué pasa si aumento precios 10%?” y evaluá el posible impacto.</p>
+        </div>
+        <div class="card">
+            <h3>Historial de decisiones</h3>
+            <p>Aprendé de acciones pasadas y sus resultados.</p>
+        </div>
+        <div class="card">
+            <h3>Productividad optimizada</h3>
+            <p>Menos tiempo analizando planillas. Más tiempo tomando decisiones estratégicas.</p>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <h2>Diseñado para dueños reales</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>No necesitás conocimientos técnicos</h3>
+            <p>Solo hacés preguntas y la IA interpreta la información por vos.</p>
+        </div>
+        <div class="card">
+            <h3>Implementación simple</h3>
+            <p>Configuración asistida para comenzar a analizar rápidamente.</p>
+        </div>
+        <div class="card">
+            <h3>Datos protegidos</h3>
+            <p>Tu información es confidencial y se maneja bajo estándares de seguridad.</p>
+        </div>
+    </div>
+</section>
+
+
+<section class="pricing-section">
+    <h2>Cupos limitados – Acceso anticipado</h2>
+    <p style="text-align:center; max-width:720px; margin:0 auto 3rem; opacity:0.9; font-size:1.08rem;">
+        Primeras empresas en implementar un asistente de inteligencia artificial para decisiones.
+        Precio congelado de lanzamiento y soporte prioritario.
+    </p>
+
+    <div class="pricing-grid">
+
+        <div class="price-card">
+            <h3>Plan Básico</h3>
+            <div class="price">$25<small>/mes</small></div>
+            <ul>
+                <li>Análisis automático diario</li>
+                <li>Alertas inteligentes básicas</li>
+                <li>Chat IA con consultas limitadas</li>
+                <li>Indicador de salud empresarial</li>
+            </ul>
+            <a href="https://web.whatsapp.com/send/?phone=5403534279315&text=Hola%2C+estoy+interesado+en+el+Plan+B%C3%A1sico+del+Asistente+de+Inteligencia+Artificial.+%C2%BFPodr%C3%ADan+enviarme+detalles+sobre+lo+que+incluye+y+c%C3%B3mo+contrato%3F&type=phone_number&app_absent=0" class="btn" style="margin-top:1.6rem; width:100%; text-align: center;" target="_blank" rel="noopener noreferrer">Empezar</a>
+        </div>
+
+        <div class="price-card">
+            <h3>Plan Pro</h3>
+            <div class="price">$49<small>/mes</small></div>
+            <ul>
+                <li>Todo lo del plan básico</li>
+                <li>Chat IA sin límites</li>
+                <li>Simulación de escenarios</li>
+                <li>Recomendaciones avanzadas</li>
+                <li>Análisis comparativo histórico</li>
+            </ul>
+            <a href="https://web.whatsapp.com/send/?phone=5403534279315&text=Hola%2C+estoy+interesado+en+el+Plan+Pro+del+Asistente+de+Inteligencia+Artificial.+Me+gustar%C3%ADa+saber+qu%C3%A9+ventajas+adicionales+ofrece+y+c%C3%B3mo+contratarlo.&type=phone_number&app_absent=0" class="btn" style="margin-top:1.6rem; width:100%; text-align: center;" target="_blank" rel="noopener noreferrer">Empezar</a>
+        </div>
+
+        <div class="price-card">
+            <h3>IA Personalizada</h3>
+            <div class="price">Consultar</div>
+            <ul>
+                <li>Integraciones específicas</li>
+                <li>Modelo ajustado a tu rubro</li>
+                <li>Implementación dedicada</li>
+                <li>Opcional: sistema ERP/CRM integrado</li>
+            </ul>
+            <a href="https://web.whatsapp.com/send/?phone=5403534279315&text=Hola%2C+me+interesa+el+Plan+Personalizado+del+Asistente+de+Inteligencia+Artificial.+%C2%BFPueden+explicarme+c%C3%B3mo+se+adapta+a+mi+negocio+y+cu%C3%A1l+es+el+proceso+de+contrataci%C3%B3n%3F&type=phone_number&app_absent=0" class="outline-btn" style="margin-top:1.6rem; width:100%; text-align: center;" target="_blank" rel="noopener noreferrer">Contactar</a>
+        </div>
+
+    </div>
+</section>
+
+
+<section>
+    <h2>Preguntas frecuentes</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>¿Es realmente una IA?</h3>
+            <p>Sí. Interpreta datos, detecta patrones y responde consultas en lenguaje natural.</p>
+        </div>
+        <div class="card">
+            <h3>¿Funciona si no tengo sistema?</h3>
+            <p>Podemos integrar una solución base para comenzar a capturar y analizar datos.</p>
+        </div>
+        <div class="card">
+            <h3>¿Para quién está pensado?</h3>
+            <p>Para dueños y directivos que quieren claridad diaria sin depender de análisis técnicos complejos.</p>        </div>
+    </div>
+    <div style="text-align: center;">
+        <p style="margin: 2rem 0; ">Despejá tus dudas en minutos.</p>
+        <a href="https://web.whatsapp.com/send/?phone=5403534279315&text=Hola%2C+me+gustar%C3%ADa+recibir+m%C3%A1s+informaci%C3%B3n+sobre+el+Asistente+de+Inteligencia+Artificial+para+decisiones+empresariales%2C+sus+beneficios+y+c%C3%B3mo+puede+ayudar+a+mi+negocio.&type=phone_number&app_absent=0" class="btn" target="_blank" rel="noopener noreferrer">Contáctanos</a>
+    </div>
+
+</section>
+
+
+<footer>
+    <p>© 2026 DigitalWings AR – Soluciones inteligentes.</p>
+</footer>
+
+<a href="https://wa.me/5491100000000?text=Hola!%20Estoy%20interesado%20en%20el%20asistente%20de%20IA." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24" height="36" width="36" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+</body>
+</html>
