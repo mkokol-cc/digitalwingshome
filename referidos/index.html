@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Programa de Referidos | Ganá con recomendaciones SaaS</title>
+  <meta name="description" content="Recomendá soluciones SaaS potentes y ganá comisiones recurrentes durante 3 meses sin vender ni dar soporte."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            primarydark: '#1d4ed8',
+            accent: '#f59e0b',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .gradient-hero { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+    .section-bg-overlay {
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .section-bg-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(30, 64, 175, 0.68);
+      z-index: 1;
+    }
+    .section-content { position: relative; z-index: 2; }
+    /* Accordion styles */
+    .accordion-item { border-bottom: 1px solid rgba(229, 231, 235, 0.3); }
+    .accordion-header {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .accordion-header:hover { background-color: rgba(255,255,255,0.05); }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .accordion-content.open { max-height: 500px; } /* Ajustar según contenido */
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+  <!-- HERO – Mejor legibilidad -->
+  <header class="gradient-hero text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/blue-futuristic-waves-background-with-computer-code-technology_53876-119584.jpg')] opacity-15 bg-cover bg-center"></div>
+    <div class="max-w-6xl mx-auto px-5 py-28 md:py-36 text-center relative z-10">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight">
+        Convertí contactos en ingresos recurrentes
+      </h1>
+      <p class="text-xl md:text-2xl font-medium mb-10 max-w-3xl mx-auto leading-relaxed">
+        Recomendá nuestras soluciones SaaS a negocios y ganá comisiones por cada cliente activo durante sus primeros <strong>3 meses</strong>.
+      </p>
+      <p class="text-lg md:text-xl font-light opacity-95 mb-12 max-w-3xl mx-auto leading-relaxed">
+        No necesitás vender, cerrar ni dar soporte.<br class="hidden sm:block">
+        Solo conectarnos con negocios que necesiten digitalizarse. <strong>Nosotros hacemos el resto</strong>.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-6 justify-center">
+        <a href="https://wa.me/549TU_NUMERO?text=Hola%21%20Quiero%20ser%20partner%20del%20programa%20de%20referidos" 
+           class="bg-white text-primary font-semibold px-10 py-5 rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition text-xl">
+          Quiero ser partner
+        </a>
+        <a href="#productos" 
+           class="border-2 border-white text-white font-semibold px-10 py-5 rounded-xl hover:bg-white/15 transition text-xl backdrop-blur-sm">
+          Ver productos
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CÓMO FUNCIONA con fondo sutil steps -->
+  <section class="py-20 bg-gray-900 text-white section-bg-overlay" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000');">
+    <div class="max-w-5xl mx-auto px-5 section-content">
+      <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 drop-shadow-lg">¿Cómo funciona?</h2>
+      
+      <div class="grid md:grid-cols-3 gap-10 text-center">
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-xl">
+          <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">1</div>
+          <h3 class="text-2xl font-semibold mb-4">Nos enviás el negocio interesado</h3>
+          <p class="text-gray-200 text-lg">A través de formulario o WhatsApp oficial.</p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-xl">
+          <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">2</div>
+          <h3 class="text-2xl font-semibold mb-4">Nosotros hacemos la demo y cerramos</h3>
+          <p class="text-gray-200 text-lg">Todo el proceso comercial lo manejamos nosotros.</p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-xl">
+          <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg">3</div>
+          <h3 class="text-2xl font-semibold mb-4">Ganás comisión 3 meses</h3>
+          <p class="text-gray-200 text-lg">Ingresos recurrentes sin esfuerzo extra.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-16 text-xl font-semibold opacity-90">
+        Sin inversión. Sin riesgo. Sin estructura.
+      </div>
+    </div>
+  </section>
+
+  <!-- CUÁNTO GANÁS con fondo money/growth -->
+  <section class="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="max-w-5xl mx-auto px-5 text-center relative">
+      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1554224155-6726b3ff338f?auto=format&fit=crop&q=80&w=2000')] opacity-10 bg-cover"></div>
+      <div class="relative z-10">
+        <h2 class="text-4xl md:text-5xl font-bold mb-10">¿Cuánto podés ganar?</h2>
+        <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto">
+          Comisión fija durante los primeros <strong>3 meses</strong> del cliente activo
+        </p>
+
+        <div class="bg-white/90 backdrop-blur-sm p-10 md:p-14 rounded-3xl shadow-2xl max-w-3xl mx-auto border border-blue-100">
+          <p class="text-2xl mb-8">Ejemplo plan <strong>100 USD/mes</strong> – comisión 30%:</p>
+          
+          <div class="grid grid-cols-3 gap-6 text-center mb-10">
+            <div>
+              <div class="text-5xl font-bold text-primary">30</div>
+              <div class="text-gray-600 mt-1">Mes 1</div>
+            </div>
+            <div>
+              <div class="text-5xl font-bold text-primary">30</div>
+              <div class="text-gray-600 mt-1">Mes 2</div>
+            </div>
+            <div>
+              <div class="text-5xl font-bold text-primary">30</div>
+              <div class="text-gray-600 mt-1">Mes 3</div>
+            </div>
+          </div>
+
+          <div class="text-4xl font-bold text-accent">
+            Total: 90 USD <span class="text-2xl font-normal text-gray-600">por recomendación</span>
+          </div>
+
+          <p class="mt-10 text-lg text-gray-700">
+            Más referidos = ingresos que crecen mes tras mes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg -->
+<section id="productos" class="py-20 relative overflow-hidden">
+  <!-- Fondo empresarial gris claro con overlay blanco/gris suave -->
+  <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg');"></div>
+  
+  <!-- Overlay blanco semitransparente para mantener legibilidad y look "empresarial limpio" -->
+  <div class="absolute inset-0 bg-white/85 backdrop-blur-[1px]"></div>
+  
+  <div class="max-w-6xl mx-auto px-5 relative z-10">
+    <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">Nuestros Productos</h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Card 1 - Gimnasios -->
+      <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 bg-white">
+        <div class="h-48 bg-cover bg-center" style="background-image: url('https://cdn.dribbble.com/userupload/16026389/file/original-14d258d2cef0621fb3f43cf7c5c43d45.png?resize=1200x900');"></div>
+        <div class="p-8">
+          <h3 class="text-2xl font-bold mb-4">Sistema de Gestión para Gimnasios</h3>
+          <p class="text-gray-600 mb-6">Clientes, pagos, rutinas, seguimiento y comunicación todo en uno.</p>
+          <div class="font-medium mb-6 text-gray-800">Ideal para: gimnasios y entrenadores personales.</div>
+          <div class="flex gap-4">
+            <a href="/referir.html?producto=gimnasios" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primarydark transition">Referir</a>
+            <a href="#" class="border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition">Ver más</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 - Reservas -->
+      <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 bg-white">
+        <div class="h-48 bg-cover bg-center" style="background-image: url('https://cdn.dribbble.com/userupload/44097288/file/original-e38657c0e40f13204a4a3e57159a063f.png?resize=1200x900');"></div>
+        <div class="p-8">
+          <h3 class="text-2xl font-bold mb-4">Sistema de Reservas y Turnos</h3>
+          <p class="text-gray-600 mb-6">Turnos online + cobro de señas anticipadas.</p>
+          <div class="font-medium mb-6 text-gray-800">Ideal para: profesionales y centros de servicios.</div>
+          <div class="flex gap-4">
+            <a href="/referir.html?producto=reservas" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primarydark transition">Referir</a>
+            <a href="#" class="border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition">Ver más</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 - Gestión Comercial -->
+      <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 bg-white">
+        <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1556740714-a8395b3a74dd?auto=format&fit=crop&q=80&w=2000');"></div>
+        <div class="p-8">
+          <h3 class="text-2xl font-bold mb-4">Sistema de Gestión Comercial</h3>
+          <p class="text-gray-600 mb-6">Stock, ventas, reportes y control administrativo integrado.</p>
+          <div class="font-medium mb-6 text-gray-800">Ideal para: comercios y negocios físicos.</div>
+          <div class="flex gap-4">
+            <a href="/referir.html?producto=comercial" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primarydark transition">Referir</a>
+            <a href="#" class="border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition">Ver más</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- POR QUÉ ES FÁCIL con fondo abstract benefits -->
+  <section class="py-20 section-bg-overlay text-white" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=2000');">
+    <div class="max-w-5xl mx-auto px-5 text-center section-content">
+      <h2 class="text-4xl md:text-5xl font-bold mb-12 drop-shadow-lg">¿Por qué es tan fácil recomendarlos?</h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-white/20 shadow-xl content-center">Soluciones reales para problemas reales</div>
+        <div class="bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-white/20 shadow-xl content-center">Negocios necesitan digitalizarse YA</div>
+        <div class="bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-white/20 shadow-xl content-center">Planes accesibles para PyMEs</div>
+        <div class="bg-white/15 backdrop-blur-lg p-8 rounded-2xl border border-white/20 shadow-xl content-center">Nosotros hacemos demo y cierre</div>
+      </div>
+      
+      <p class="text-2xl font-medium mt-16 opacity-95">
+        Cero experiencia técnica requerida.
+      </p>
+    </div>
+  </section>
+  <!-- FAQ – Diseño diferenciado sin JS -->
+<section class="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+  <div class="max-w-4xl mx-auto px-5">
+    <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">Preguntas Frecuentes</h2>
+    
+    <div class="space-y-10">
+      <!-- Pregunta 1 -->
+      <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+        <div class="bg-primary text-white px-7 py-5 text-xl md:text-2xl font-semibold">
+          ¿Tengo que vender o cerrar la venta?
+        </div>
+        <div class="px-7 py-6 text-lg text-gray-700 leading-relaxed">
+          No. Solo generás el contacto interesado. El equipo comercial se encarga de la demo, negociación y cierre.
+        </div>
+      </div>
+
+      <!-- Pregunta 2 -->
+      <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+        <div class="bg-primary text-white px-7 py-5 text-xl md:text-2xl font-semibold">
+          ¿Cuándo y cómo cobro la comisión?
+        </div>
+        <div class="px-7 py-6 text-lg text-gray-700 leading-relaxed">
+          Cobrás cuando el cliente efectivamente paga su plan mensual. La comisión se abona sobre los primeros 3 meses pagados y activos.
+        </div>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+        <div class="bg-primary text-white px-7 py-5 text-xl md:text-2xl font-semibold">
+          ¿Cómo registro mis referidos para que cuenten?
+        </div>
+        <div class="px-7 py-6 text-lg text-gray-700 leading-relaxed">
+          Todos los referidos deben enviarse por nuestro formulario oficial o WhatsApp designado para ser válidos y trazables.
+        </div>
+      </div>
+
+      <!-- Pregunta 4 -->
+      <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+        <div class="bg-primary text-white px-7 py-5 text-xl md:text-2xl font-semibold">
+          ¿Participar tiene algún costo o requisito?
+        </div>
+        <div class="px-7 py-6 text-lg text-gray-700 leading-relaxed">
+          Ninguno. Es 100% gratuito, sin inversión inicial ni estructura mínima requerida.
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-12 text-gray-600 text-lg italic">
+      ¿Tenés alguna otra duda? Escribinos por WhatsApp y te respondemos en minutos.
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="https://wa.me/549TU_NUMERO?text=Hola%21%20Tengo%20una%20duda%20sobre%20el%20programa%20de%20referidos" 
+         class="inline-block bg-primary text-white font-semibold px-10 py-4 rounded-xl shadow-lg hover:bg-primarydark hover:shadow-xl transition-all text-lg">
+        Contactanos
+      </a>
+    </div>
+  </div>
+</section>
+
+  <!-- TÉRMINOS – Más estructurado y visual -->
+<footer class="bg-gray-900 text-gray-200 py-20 relative overflow-hidden">
+  <!-- Imagen de fondo sutil (abstract dark corporate/tech) -->
+  <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg');"></div>
+  
+  <!-- Overlay en el color principal del footer (gris oscuro/negro semitransparente) para mantener legibilidad y coherencia -->
+  <div class="absolute inset-0 bg-gray-900/95"></div> <!-- Ajusta /75 a /80 o /85 si querés más opaco -->
+
+  <div class="max-w-5xl mx-auto px-5 relative z-10">
+    <h2 class="text-4xl font-bold text-white mb-12 text-center">Términos y Condiciones del Programa de Referidos</h2>
+    
+    <div class="prose prose-invert max-w-none prose-lg">
+      <p class="mb-8 text-gray-300 leading-relaxed">Este programa permite a terceros independientes recomendar clientes potenciales a cambio de una comisión por los primeros meses de servicio activo.</p>
+      
+      <ul class="list-none space-y-6">
+        <li class="flex items-start">
+          <span class="text-primary text-2xl mr-4">•</span>
+          <span>Solo se reconocerán referidos enviados previamente por los canales oficiales (formulario o WhatsApp designado).</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-primary text-2xl mr-4">•</span>
+          <span>La comisión aplica exclusivamente sobre pagos efectivamente realizados por el cliente durante los primeros tres (3) meses de servicio activo.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-primary text-2xl mr-4">•</span>
+          <span>No se generará comisión en caso de cancelación temprana, falta de pago o reembolso total por parte del cliente.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-primary text-2xl mr-4">•</span>
+          <span>La empresa se reserva el derecho de rechazar cualquier referido que ya esté en negociación previa o registrado en el sistema.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-primary text-2xl mr-4">•</span>
+          <span>La participación no genera relación laboral, dependencia ni vínculo societario de ningún tipo.</span>
+        </li>
+        <li class="flex items-start">
+          <span class="text-primary text-2xl mr-4">•</span>
+          <span>Las condiciones del programa pueden ser modificadas en cualquier momento, con notificación previa a los participantes activos.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="text-center mt-16 text-sm opacity-70">
+      © 2026 Tu Empresa SaaS – Todos los derechos reservados
+    </div>
+  </div>
+</footer>
+
+<!-- Botón Flotante de WhatsApp -->
+<a href="https://wa.me/549TU_NUMERO?text=Hola%21%20Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20el%20programa%20de%20referidos" 
+   class="fixed bottom-6 right-6 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-[#128C7E] transition-colors z-50"
+   aria-label="Contactar por WhatsApp"
+   target="_blank"
+   rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" height="36" width="36" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+</body>
+</html>
