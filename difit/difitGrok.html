@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiFit • Software SaaS para Gimnasios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap');
+        
+        :root {
+            --accent: 234 179 8;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.75)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
+        }
+
+        .feature-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: rgb(234 179 8);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .price-card {
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .price-card.popular {
+            transform: scale(1.06);
+            z-index: 10;
+        }
+        
+        .price-card:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body class="tail-container bg-zinc-950 text-zinc-200">
+
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-5 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-x-3">
+                    <div class="w-9 h-9 bg-yellow-400 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-dumbbell text-zinc-950 text-2xl"></i>
+                    </div>
+                    <span class="logo-font text-3xl font-semibold tracking-tighter text-white">DiFit</span>
+                </div>
+
+                <!-- Menu -->
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="#caracteristicas" class="nav-link text-zinc-300 hover:text-white">Características</a>
+                    <a href="#app" class="nav-link text-zinc-300 hover:text-white">App para socios</a>
+                    <a href="#precios" class="nav-link text-zinc-300 hover:text-white">Precios</a>
+                    <a href="#contacto" class="nav-link text-zinc-300 hover:text-white">Contacto</a>
+                </div>
+
+                <div class="flex items-center gap-x-4">
+                    <a href="#precios" 
+                       class="hidden sm:block px-6 py-2.5 text-sm font-semibold text-white border border-zinc-700 hover:border-zinc-400 rounded-2xl transition">
+                        Ver planes
+                    </a>
+                    <a href="https://web.whatsapp.com/send/?phone=5493534279315&text=Hola,%20me%20interesa%20inscribirme%20en%20el%20prelanzamiento%20de%20Difit." 
+                       class="px-8 py-3 bg-yellow-400 hover:bg-yellow-300 transition text-zinc-950 font-semibold rounded-3xl text-sm flex items-center gap-x-2">
+                        <span>Unirme al prelanzamiento</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-bg h-screen flex items-center relative">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-x-3 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium px-4 py-2 rounded-3xl mb-6">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    INVITACIÓN EXCLUSIVA PRELANZAMIENTO
+                </div>
+                
+                <h1 class="text-6xl md:text-7xl font-bold leading-none tracking-tighter text-white logo-font mb-6">
+                    Tu gimnasio.<br>
+                    <span class="text-yellow-400">Totalmente bajo control.</span>
+                </h1>
+                
+                <p class="text-xl text-zinc-300 max-w-md mb-10">
+                    El SaaS integral que gestiona clientes, pagos, rutinas, dietas y fideliza a tus socios con una app móvil hermosa. 
+                    Todo en un solo lugar. Sin complicaciones.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#contacto" 
+                       class="px-10 py-4 bg-yellow-400 hover:bg-amber-300 transition-all text-zinc-950 font-semibold text-lg rounded-3xl flex items-center gap-x-3 shadow-xl shadow-yellow-500/30">
+                        Unirme al prelanzamiento
+                        <i class="fa-solid fa-rocket"></i>
+                    </a>
+                    <a href="#caracteristicas" 
+                       class="px-10 bg-white hover:bg-zinc-100 transition-all text-zinc-950 font-semibold text-lg rounded-3xl flex items-center gap-x-3 transition">
+                        Ver cómo funciona
+                    </a>
+                </div>
+                
+                <div class="mt-12 flex items-center gap-x-8 text-sm">
+                    <div class="flex items-center gap-x-2">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span>Sin costo inicial</span>
+                    </div>
+                    <div class="flex items-center gap-x-2">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span>Acceso anticipado exclusivo</span>
+                    </div>
+                    <div class="flex items-center gap-x-2">
+                        <i class="fa-solid fa-check text-emerald-400"></i>
+                        <span>Beneficios para fundadores</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating badge -->
+        <div class="hidden lg:block absolute bottom-12 right-12 bg-zinc-900/90 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-5 max-w-xs">
+            <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-2xl flex items-center justify-center text-3xl">📈</div>
+                <div>
+                    <p class="text-emerald-400 text-xs font-medium tracking-widest">REDUCCIÓN DE DESERCIÓN</p>
+                    <p class="text-4xl font-bold text-white">−37%</p>
+                    <p class="text-zinc-400 text-sm">en los primeros 90 días</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BAR -->
+    <div class="bg-zinc-900 py-6 border-b border-zinc-800">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="text-center">
+                <p class="text-sm text-zinc-500 tracking-widest uppercase">Construido para potenciar cada aspecto de tu gimnasio</p>
+                <div class="mt-4 flex flex-wrap justify-center items-center gap-x-10 gap-y-3 text-zinc-300 font-medium">
+                    <span>Gestión Automatizada</span>
+                    <span class="text-yellow-400 text-xs">◆</span>
+                    <span>App Social para Socios</span>
+                    <span class="text-yellow-400 text-xs">◆</span>
+                    <span>Aumento de Retención</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROBLEMAS -->
+    <section class="py-24 bg-zinc-950">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-yellow-400 text-sm font-semibold tracking-widest">EL PROBLEMA REAL</span>
+                    <h2 class="text-5xl font-semibold tracking-tighter text-white mt-3 leading-none">
+                        Gestionar un gimnasio<br>no debería ser tan difícil
+                    </h2>
+                    <div class="mt-10 space-y-8">
+                        <div class="flex gap-6">
+                            <div class="w-8 h-8 flex-shrink-0 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl">📅</div>
+                            <div>
+                                <p class="font-semibold text-lg">Vencimientos manuales y deudas que se te escapan</p>
+                                <p class="text-zinc-400">Excel, papeles y recordatorios olvidados.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-8 h-8 flex-shrink-0 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl">🏋️</div>
+                            <div>
+                                <p class="font-semibold text-lg">Socios que se pierden y dejan de entrenar</p>
+                                <p class="text-zinc-400">Sin seguimiento ni motivación constante.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-8 h-8 flex-shrink-0 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl">📊</div>
+                            <div>
+                                <p class="font-semibold text-lg">Tiempo perdido en tareas repetitivas</p>
+                                <p class="text-zinc-400">Alta/baja de clientes, rutinas, cobros...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800">
+                    <div class="text-center">
+                        <div class="inline-flex items-center gap-2 bg-yellow-400 text-zinc-950 text-xs font-bold px-5 py-2 rounded-3xl">
+                            <i class="fa-solid fa-bolt"></i>
+                            DiFit LO RESUELVE TODO
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 grid grid-cols-2 gap-6 text-center">
+                        <div class="bg-zinc-950 rounded-2xl p-6">
+                            <i class="fa-solid fa-users text-4xl text-yellow-400 mb-4"></i>
+                            <p class="font-semibold">Gestión de clientes</p>
+                            <p class="text-emerald-400 text-3xl font-bold mt-2">100%</p>
+                            <p class="text-xs text-zinc-500">automatizada</p>
+                        </div>
+                        <div class="bg-zinc-950 rounded-2xl p-6">
+                            <i class="fa-solid fa-mobile-screen text-4xl text-yellow-400 mb-4"></i>
+                            <p class="font-semibold">App para socios</p>
+                            <p class="text-emerald-400 text-3xl font-bold mt-2">GRATIS</p>
+                            <p class="text-xs text-zinc-500">incluida siempre</p>
+                        </div>
+                        <div class="bg-zinc-950 rounded-2xl p-6">
+                            <i class="fa-solid fa-bell text-4xl text-yellow-400 mb-4"></i>
+                            <p class="font-semibold">Notificaciones</p>
+                            <p class="text-emerald-400 text-3xl font-bold mt-2">AUTO</p>
+                            <p class="text-xs text-zinc-500">vencimientos y motivación</p>
+                        </div>
+                        <div class="bg-zinc-950 rounded-2xl p-6">
+                            <i class="fa-solid fa-chart-line text-4xl text-yellow-400 mb-4"></i>
+                            <p class="font-semibold">Reportes</p>
+                            <p class="text-emerald-400 text-3xl font-bold mt-2">EN 1 CLICK</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARACTERÍSTICAS -->
+    <section id="caracteristicas" class="py-24 bg-zinc-900">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <span class="px-4 py-2 bg-yellow-400/10 text-yellow-400 text-xs font-semibold rounded-3xl">MVP LISTO PARA USAR HOY</span>
+                <h2 class="text-5xl font-bold tracking-tighter text-white mt-4">Todo lo que tu gimnasio necesita</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Admin -->
+                <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8">
+                    <div class="h-12 w-12 bg-yellow-400/10 text-yellow-400 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-shield-halved text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Panel Administrativo</h3>
+                    <ul class="space-y-4 text-zinc-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Alta, baja y estado de clientes</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Gestión de pagos y vencimientos automáticos</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Creación y asignación de rutinas + ejercicios</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>ABM de dietas con comidas e instrucciones</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Reportes de ingresos y actividad</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- App -->
+                <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8">
+                    <div class="h-12 w-12 bg-emerald-400/10 text-emerald-400 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-mobile-screen-button text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">App Móvil para Socios</h3>
+                    <ul class="space-y-4 text-zinc-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Rutinas y dietas asignadas</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Registro de marcas (peso, reps, series)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Historial de progreso y fotos corporales</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Estado de su membresía en tiempo real</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Feed social para que los socios interactúen y se motiven.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Posibilidad de postear, comentar y dar 'like' para crear comunidad.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Seguimiento -->
+                <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8">
+                    <div class="h-12 w-12 bg-sky-400/10 text-sky-400 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-chart-simple text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Seguimiento Corporal</h3>
+                    <ul class="space-y-4 text-zinc-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Medidas corporales y gráficos de evolución</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Carga de fotos de progreso</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Notificaciones automáticas de vencimiento y deuda</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span>Avisos de inactividad configurables</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APP PARA SOCIOS -->
+    <section id="app" class="py-24 bg-black">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-emerald-400 uppercase text-sm font-bold">Para tus socios</span>
+                    <h2 class="text-5xl font-bold tracking-tighter text-white mt-4">La app que hace que vuelvan todos los días</h2>
+                    <p class="mt-6 text-zinc-400 text-lg leading-relaxed">
+                        Tus clientes entran a la app y no solo encuentran su rutina y dieta. Interactúan, comparten su progreso en un feed social, motivan a otros y se sienten parte de una comunidad real.
+                        Se sienten cuidados y conectados. Se quedan.
+                    </p>
+                    
+                    <div class="mt-12 grid grid-cols-2 gap-6">
+                        <div class="bg-zinc-900 rounded-3xl p-6 flex gap-4">
+                            <i class="fa-solid fa-fire text-orange-400 text-3xl"></i>
+                            <div>
+                                <p class="font-semibold">Rutinas listas para entrenar</p>
+                                <p class="text-xs text-zinc-500">Con videos y descripciones</p>
+                            </div>
+                        </div>
+                        <div class="bg-zinc-900 rounded-3xl p-6 flex gap-4">
+                            <i class="fa-solid fa-camera text-sky-400 text-3xl"></i>
+                            <div>
+                                <p class="font-semibold">Fotos de progreso</p>
+                                <p class="text-xs text-zinc-500">Antes y después visibles</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mockup de celular -->
+                <div class="flex flex-col items-center gap-y-8">
+                    <div class="relative w-80">
+                        <img src="https://picsum.photos/id/201/600/1200" alt="App DiFit" 
+                             class="rounded-[3rem] shadow-2xl shadow-black border-8 border-zinc-900">
+                        <div class="absolute -top-4 -right-4 bg-yellow-400 text-zinc-950 text-xs font-bold px-5 py-1 rounded-3xl rotate-12 shadow-xl">
+                            App en vivo
+                        </div>
+                    </div>
+                    <a href="https://URL_DE_TU_DEMO_AQUI" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-x-3 px-8 py-4 bg-emerald-400 hover:bg-emerald-300 transition-colors text-zinc-950 font-semibold text-lg rounded-3xl shadow-lg shadow-emerald-500/20">
+                        <span>Ver demo interactiva</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANES -->
+    <section id="precios" class="py-24 bg-zinc-950">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold tracking-tighter">Planes pensados para crecer contigo</h2>
+                <p class="text-zinc-400 mt-4">Comenzá con lo básico. Escalá cuando quieras.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Básico -->
+                <div class="price-card bg-zinc-900 border border-zinc-700 rounded-3xl p-8 flex flex-col">
+                    <div>
+                        <p class="uppercase text-xs tracking-widest font-medium text-zinc-400">PLAN BÁSICO</p>
+                        <p class="text-6xl font-bold text-white mt-2">$19</p>
+                        <p class="text-zinc-400">/mes por gimnasio</p>
+                    </div>
+                    <ul class="mt-8 space-y-4 flex-1">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Gestión completa de clientes</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Pagos y vencimientos</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Rutinas y dietas</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> App móvil para socios</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Notificaciones automáticas</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Reportes básicos</li>
+                    </ul>
+                    <a href="#contacto" class="mt-12 block text-center py-4 bg-zinc-800 hover:bg-zinc-700 transition font-semibold rounded-3xl">Elegir Básico</a>
+                </div>
+                
+                <!-- Pro (popular) -->
+                <div class="price-card popular bg-gradient-to-b from-zinc-900 to-zinc-950 border border-yellow-400 rounded-3xl p-8 flex flex-col relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-zinc-950 text-xs font-bold px-6 py-1 rounded-3xl">MÁS VENDIDO</div>
+                    <div>
+                        <p class="uppercase text-xs tracking-widest font-medium text-yellow-400">PLAN PRO</p>
+                        <p class="text-6xl font-bold text-white mt-2">$39</p>
+                        <p class="text-zinc-400">/mes por gimnasio</p>
+                    </div>
+                    <ul class="mt-8 space-y-4 flex-1">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Todo del Básico</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Comunidad y feed social</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Gamificación y logros</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Seguimiento avanzado</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Estadísticas detalladas</li>
+                    </ul>
+                    <a href="#contacto" class="mt-12 block text-center py-4 bg-yellow-400 hover:bg-amber-300 transition font-semibold text-zinc-950 rounded-3xl">Elegir Pro</a>
+                </div>
+                
+                <!-- Full -->
+                <div class="price-card bg-zinc-900 border border-zinc-700 rounded-3xl p-8 flex flex-col">
+                    <div>
+                        <p class="uppercase text-xs tracking-widest font-medium text-zinc-400">PLAN FULL</p>
+                        <p class="text-6xl font-bold text-white mt-2">$69</p>
+                        <p class="text-zinc-400">/mes por gimnasio</p>
+                    </div>
+                    <ul class="mt-8 space-y-4 flex-1">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Todo del Pro</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Control de acceso por app</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Roles avanzados (trainer, nutri)</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Chat grupal del gimnasio</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check text-emerald-400"></i> Soporte prioritario</li>
+                    </ul>
+                    <a href="#contacto" class="mt-12 block text-center py-4 bg-zinc-800 hover:bg-zinc-700 transition font-semibold rounded-3xl">Elegir Full</a>
+                </div>
+            </div>
+            
+            <p class="text-center text-xs text-zinc-500 mt-10">* Precios de referencia en USD. Participá del prelanzamiento y obtené un descuento de fundador.</p>
+        </div>
+    </section>
+
+    <!-- PROGRAMA FUNDADORES -->
+    <section id="beneficios" class="py-24 bg-zinc-900">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <span class="px-4 py-2 bg-yellow-400/10 text-yellow-400 text-xs font-semibold rounded-3xl">PROGRAMA DE FUNDADORES</span>
+                <h2 class="text-5xl font-bold tracking-tighter text-white mt-4">Sé pionero y obtené beneficios únicos</h2>
+                <p class="text-zinc-400 mt-4 max-w-2xl mx-auto">Estamos invitando a un grupo selecto de dueños de gimnasios a ser parte de nuestro prelanzamiento. Tu feedback es clave para construir la mejor herramienta del mercado.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 text-center">
+                    <div class="h-16 w-16 bg-emerald-400/10 text-emerald-400 rounded-3xl flex items-center justify-center mb-6 mx-auto text-3xl">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Acceso Anticipado</h3>
+                    <p class="text-zinc-400">Usá DiFit antes que nadie y sé parte de la revolución en la gestión de gimnasios.</p>
+                </div>
+                <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 text-center">
+                    <div class="h-16 w-16 bg-yellow-400/10 text-yellow-400 rounded-3xl flex items-center justify-center mb-6 mx-auto text-3xl">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Precio Fundador</h3>
+                    <p class="text-zinc-400">Asegurá un precio con un descuento masivo de por vida, como agradecimiento por tu confianza.</p>
+                </div>
+                <div class="bg-zinc-950 border border-zinc-800 rounded-3xl p-8 text-center">
+                    <div class="h-16 w-16 bg-sky-400/10 text-sky-400 rounded-3xl flex items-center justify-center mb-6 mx-auto text-3xl">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Influencia Directa</h3>
+                    <p class="text-zinc-400">Tu opinión y sugerencias impactarán directamente en las futuras funcionalidades de la plataforma.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="contacto" class="py-32 bg-gradient-to-b from-black to-zinc-950">
+        <div class="max-w-screen-2xl mx-auto px-8 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-5xl font-bold tracking-tighter">¿Listo para ser parte del futuro?</h2>
+                <p class="mt-6 text-xl text-zinc-400">Postulate al programa de fundadores y sé uno de los primeros en transformar tu gimnasio con DiFit. Cupos limitados.</p>
+                
+                <div class="mt-12">
+                    <a href="https://web.whatsapp.com/send/?phone=5493534279315&text=Hola,%20me%20interesa%20inscribirme%20en%20el%20prelanzamiento%20de%20Difit." 
+                       class="inline-flex items-center gap-x-4 bg-yellow-400 text-zinc-950 font-semibold text-2xl px-16 py-8 rounded-3xl hover:scale-105 transition">
+                        <span>Quiero mi acceso anticipado</span>
+                        <i class="fa-solid fa-arrow-right text-3xl"></i>
+                    </a>
+                </div>
+                
+                <p class="mt-8 text-zinc-500 text-sm">O escribinos por WhatsApp: <span class="text-emerald-400">+54 9 353 427 9315</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-20 border-t border-zinc-900">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12">
+                <div>
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 bg-yellow-400 rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-dumbbell text-zinc-950 text-2xl"></i>
+                        </div>
+                        <span class="logo-font text-3xl font-semibold tracking-tighter text-white">DiFit</span>
+                    </div>
+                    <p class="text-zinc-500 mt-4 max-w-xs">Sistema SaaS integral para gimnasios pequeños y medianos. Hecho con pasión en Argentina.</p>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-x-16">
+                    <div>
+                        <p class="font-medium mb-4">Producto</p>
+                        <ul class="space-y-2 text-sm text-zinc-400">
+                            <li><a href="#caracteristicas" class="hover:text-white">Características</a></li>
+                            <li><a href="#precios" class="hover:text-white">Precios</a></li>
+                            <li><a href="#beneficios" class="hover:text-white">Roadmap</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-medium mb-4">Empresa</p>
+                        <ul class="space-y-2 text-sm text-zinc-400">
+                            <li><a href="https://www.instagram.com/digitalwings.ar/" class="hover:text-white">Sobre nosotros</a></li>
+                            <li><a href="https://digitalwings.dev.ar" class="hover:text-white">Blog</a></li>
+                            <li><a href="https://web.whatsapp.com/send/?phone=5493534279315" class="hover:text-white">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-medium mb-4">Legal</p>
+                        <ul class="space-y-2 text-sm text-zinc-400">
+                            <li><a href="#" class="hover:text-white">Privacidad</a></li>
+                            <li><a href="#" class="hover:text-white">Términos</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center text-xs text-zinc-600 mt-20">
+                © 2026 DigitalWings. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script already included via CDN
+        console.log('%cDiFit Landing Page lista para usar 🔥', 'color:#eab308; font-family:monospace');
+    </script>
+</body>
+</html>

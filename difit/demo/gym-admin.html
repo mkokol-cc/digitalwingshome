@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiFit — Admin Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-base: #0a0a0b;
+    --bg-surface: #111114;
+    --bg-elevated: #18181d;
+    --bg-card: #1c1c23;
+    --bg-hover: #22222a;
+    --accent: #d4b84a;
+    --accent-dim: #b89a32;
+    --accent-glow: rgba(212,184,74,0.15);
+    --accent-subtle: rgba(212,184,74,0.08);
+    --text-primary: #f0efe8;
+    --text-secondary: #8a8a96;
+    --text-muted: #4a4a58;
+    --border: #2a2a35;
+    --border-accent: rgba(212,184,74,0.3);
+    --success: #3ecf8e;
+    --danger: #f87171;
+    --warning: #fb923c;
+    --info: #60a5fa;
+    --sidebar-w: 240px;
+    --topbar-h: 64px;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --shadow-accent: 0 0 24px rgba(212,184,74,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 16px rgba(212,184,74,0.3);
+  }
+
+  .logo-text { /*font-family: 'Syne', sans-serif;*/ font-weight: 800; font-size: 18px; }
+  .logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 16px 12px;
+    overflow-y: auto;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 12px 8px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.18s;
+    margin-bottom: 2px;
+    position: relative;
+  }
+
+  .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .nav-item.active {
+    background: var(--accent-subtle);
+    color: var(--accent);
+    border: 1px solid var(--border-accent);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 20px;
+    background: var(--accent);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .nav-icon { width: 18px; text-align: center; font-size: 16px; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--danger);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 20px;
+  }
+
+  .sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .user-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), #8b6914);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #000;
+  }
+
+  .user-info { flex: 1; min-width: 0; }
+  .user-name { font-size: 13px; font-weight: 600; }
+  .user-role { font-size: 11px; color: var(--text-muted); }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    height: var(--topbar-h);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: 10px; }
+
+  .search-bar {
+    display: flex; align-items: center;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    gap: 8px;
+    min-width: 220px;
+    transition: border-color 0.18s;
+  }
+
+  .search-bar:focus-within { border-color: var(--border-accent); }
+  .search-bar input {
+    background: none; border: none; outline: none;
+    color: var(--text-primary); font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+  }
+  .search-bar input::placeholder { color: var(--text-muted); }
+
+  .icon-btn {
+    width: 38px; height: 38px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-secondary);
+    transition: all 0.18s;
+    position: relative;
+  }
+  .icon-btn:hover { border-color: var(--border-accent); color: var(--accent); }
+
+  .notif-dot {
+    position: absolute;
+    top: 7px; right: 7px;
+    width: 7px; height: 7px;
+    background: var(--danger);
+    border-radius: 50%;
+    border: 2px solid var(--bg-surface);
+  }
+
+  /* ─── CONTENT ─── */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* ─── VIEWS ─── */
+  .view { display: none; flex-direction: column; gap: 24px; animation: fadeIn 0.25s ease; }
+  .view.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .section-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 0 16px rgba(212,184,74,0.25);
+  }
+  .btn-primary:hover { background: #e0c84e; box-shadow: 0 0 24px rgba(212,184,74,0.4); transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--border-accent); color: var(--accent); }
+
+  .btn-danger { background: rgba(248,113,113,0.15); color: var(--danger); border: 1px solid rgba(248,113,113,0.3); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+  /* ─── KPI CARDS ─── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  .kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .kpi-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .kpi-card.accent::before { background: var(--accent); }
+  .kpi-card.success::before { background: var(--success); }
+  .kpi-card.danger::before { background: var(--danger); }
+  .kpi-card.info::before { background: var(--info); }
+
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px; }
+  .kpi-value { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 8px; }
+  .kpi-value.accent { color: var(--accent); }
+  .kpi-value.success { color: var(--success); }
+  .kpi-value.danger { color: var(--danger); }
+  .kpi-value.info { color: var(--info); }
+  .kpi-delta { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .kpi-delta.up { color: var(--success); }
+  .kpi-delta.down { color: var(--danger); }
+  .kpi-icon {
+    position: absolute; right: 18px; top: 18px;
+    font-size: 28px; opacity: 0.12;
+  }
+
+  /* ─── CHARTS GRID ─── */
+  .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .charts-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+
+  .chart-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .chart-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+  .chart-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* ─── TABLE ─── */
+  .table-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .table-toolbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .filter-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.18s;
+  }
+  .filter-chip:hover, .filter-chip.active { border-color: var(--border-accent); color: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--bg-elevated); }
+  th {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  td {
+    padding: 14px 20px;
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  tr:hover td { background: var(--bg-hover); }
+
+  .member-cell { display: flex; align-items: center; gap: 12px; }
+  .member-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .member-name { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+  .member-email { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── BADGES ─── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-success { background: rgba(62,207,142,0.12); color: var(--success); border: 1px solid rgba(62,207,142,0.25); }
+  .badge-danger { background: rgba(248,113,113,0.12); color: var(--danger); border: 1px solid rgba(248,113,113,0.25); }
+  .badge-warning { background: rgba(251,146,60,0.12); color: var(--warning); border: 1px solid rgba(251,146,60,0.25); }
+  .badge-accent { background: var(--accent-subtle); color: var(--accent); border: 1px solid var(--border-accent); }
+  .badge-muted { background: var(--bg-elevated); color: var(--text-muted); border: 1px solid var(--border); }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* ─── MEMBER DETAIL ─── */
+  .member-detail-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+  .member-profile-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+  }
+  .profile-avatar-lg {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 800;
+    margin: 0 auto 16px;
+    border: 3px solid var(--border-accent);
+    box-shadow: var(--shadow-accent);
+  }
+  .profile-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .profile-meta { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+  .profile-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 20px;
+  }
+  .profile-stat {
+    background: var(--bg-elevated);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .profile-stat-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--accent); }
+  .profile-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .info-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-size: 12px; color: var(--text-muted); }
+  .info-value { font-size: 13px; font-weight: 500; }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .cards-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: var(--shadow-accent); }
+
+  /* ─── DIET CARD ─── */
+  .diet-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.2s; }
+  .diet-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+  .diet-header { background: linear-gradient(135deg, var(--bg-elevated), var(--bg-hover)); padding: 20px; border-bottom: 1px solid var(--border); }
+  .diet-name { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; }
+  .diet-kcal { font-size: 28px; font-weight: 800; color: var(--accent); font-family: 'Syne', sans-serif; }
+  .diet-body { padding: 20px; }
+  .macro-bar { margin-bottom: 14px; }
+  .macro-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+  .macro-track { height: 6px; background: var(--bg-elevated); border-radius: 3px; overflow: hidden; }
+  .macro-fill { height: 100%; border-radius: 3px; }
+
+  /* ─── EXERCISE CARD ─── */
+  .exercise-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .exercise-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+  .exercise-thumb {
+    height: 140px;
+    background: var(--bg-elevated);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    position: relative;
+  }
+  .exercise-difficulty {
+    position: absolute;
+    top: 10px; right: 10px;
+  }
+  .exercise-body { padding: 16px; }
+  .exercise-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .exercise-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* ─── ROUTINE PLANNER ─── */
+  .routine-planner { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .planner-header { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .day-col { border-right: 1px solid var(--border); }
+  .day-col:last-child { border-right: none; }
+  .day-header { padding: 12px 8px; text-align: center; background: var(--bg-elevated); border-bottom: 1px solid var(--border); }
+  .day-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+  .day-exercises { padding: 10px 8px; min-height: 200px; display: flex; flex-direction: column; gap: 6px; }
+  .exercise-pill {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .exercise-pill:hover { border-color: var(--border-accent); }
+  .exercise-pill.accent { background: var(--accent-subtle); border-color: var(--border-accent); color: var(--accent); }
+  .exercise-pill-name { font-weight: 600; color: var(--text-primary); font-size: 11px; margin-bottom: 2px; }
+  .exercise-pill-meta { color: var(--text-muted); font-size: 10px; }
+  .add-exercise-btn {
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .add-exercise-btn:hover { border-color: var(--border-accent); color: var(--accent); }
+
+  /* ─── GYM MAP ─── */
+  .gym-map-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .gym-map-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .gym-map-svg-wrap {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .map-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* ─── FORM ─── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .form-input {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.18s;
+    width: 100%;
+  }
+  .form-input:focus { border-color: var(--border-accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .form-input::placeholder { color: var(--text-muted); }
+  select.form-input { cursor: pointer; }
+  textarea.form-input { resize: vertical; min-height: 90px; }
+
+  /* ─── ALERTS ─── */
+  .alert {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    border: 1px solid;
+  }
+  .alert-danger { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--danger); }
+  .alert-warning { background: rgba(251,146,60,0.08); border-color: rgba(251,146,60,0.25); color: var(--warning); }
+  .alert-success { background: rgba(62,207,142,0.08); border-color: rgba(62,207,142,0.25); color: var(--success); }
+
+  .alerts-col { display: flex; flex-direction: column; gap: 8px; }
+  .alert-icon { font-size: 16px; margin-top: 1px; }
+  .alert-title { font-weight: 700; margin-bottom: 2px; }
+  .alert-body { font-size: 12px; opacity: 0.85; }
+
+  /* ─── MEMBERSHIPS ─── */
+  .membership-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .membership-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: var(--shadow-accent); }
+  .membership-card.featured {
+    border-color: var(--border-accent);
+    background: linear-gradient(135deg, var(--bg-card), #1a1a14);
+  }
+  .membership-card.featured::before {
+    content: 'POPULAR';
+    position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #000;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+    padding: 3px 12px;
+    border-radius: 0 0 8px 8px;
+  }
+  .m-plan-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px; }
+  .m-price { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--accent); line-height: 1; }
+  .m-price-period { font-size: 13px; color: var(--text-muted); }
+  .m-features { margin: 18px 0; display: flex; flex-direction: column; gap: 8px; }
+  .m-feature { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+  .m-feature-check { color: var(--success); font-size: 14px; }
+
+  /* ─── REPORTS ─── */
+  .reports-header-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  /* ─── TABS ─── */
+  .tabs { display: flex; gap: 4px; }
+  .tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.18s;
+    border: 1px solid transparent;
+  }
+  .tab:hover { color: var(--text-secondary); }
+  .tab.active { background: var(--accent-subtle); color: var(--accent); border-color: var(--border-accent); }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-track { height: 8px; background: var(--bg-elevated); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent-dim), var(--accent)); }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 560px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .modal-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
+  .modal-close { cursor: pointer; color: var(--text-muted); font-size: 22px; line-height: 1; transition: color 0.15s; }
+  .modal-close:hover { color: var(--text-primary); }
+  .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* ─── MISC ─── */
+  .flex { display: flex; }
+  .items-center { align-items: center; }
+  .gap-2 { gap: 8px; }
+  .gap-3 { gap: 12px; }
+  .mt-1 { margin-top: 4px; }
+  .mt-2 { margin-top: 8px; }
+  .mt-3 { margin-top: 12px; }
+  .text-muted { color: var(--text-muted); }
+  .text-accent { color: var(--accent); }
+  .text-success { color: var(--success); }
+  .font-bold { font-weight: 700; }
+  .text-sm { font-size: 13px; }
+  .text-xs { font-size: 11px; }
+
+  @media (max-width: 1100px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .member-detail-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><i class="fa-solid fa-dumbbell text-zinc-950 text-2xl"></i></div>
+    <div>
+      <div class="logo-text">DiFit</div>
+      <div class="logo-sub">Admin Pro</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <div class="nav-item active" onclick="navigate('dashboard', this)">
+      <span class="nav-icon">📊</span> Dashboard
+    </div>
+
+    <div class="nav-section-label">Gestión</div>
+    <div class="nav-item" onclick="navigate('members', this)">
+      <span class="nav-icon">👥</span> Miembros
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('memberships', this)">
+      <span class="nav-icon">💳</span> Membresías
+    </div>
+    <div class="nav-item" onclick="navigate('diets', this)">
+      <span class="nav-icon">🥗</span> Dietas
+    </div>
+    <div class="nav-item" onclick="navigate('exercises', this)">
+      <span class="nav-icon">🏃</span> Ejercicios
+    </div>
+    <div class="nav-item" onclick="navigate('routines', this)">
+      <span class="nav-icon">📅</span> Rutinas
+    </div>
+
+    <div class="nav-section-label">Instalaciones</div>
+    <div class="nav-item" onclick="navigate('gymmap', this)">
+      <span class="nav-icon">🗺️</span> Plano del Gym
+    </div>
+
+    <div class="nav-section-label">Análisis</div>
+    <div class="nav-item" onclick="navigate('reports', this)">
+      <span class="nav-icon">📈</span> Reportes
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-chip">
+      <div class="user-avatar">AJ</div>
+      <div class="user-info">
+        <div class="user-name">Admin José</div>
+        <div class="user-role">Super Admin</div>
+      </div>
+      <span style="color:var(--text-muted);font-size:16px">⚙️</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="main">
+  <header class="topbar">
+    <div class="page-title" id="page-title">Dashboard</div>
+    <div class="topbar-actions">
+      <div class="search-bar">
+        <span style="color:var(--text-muted)">🔍</span>
+        <input type="text" placeholder="Buscar miembros, rutinas...">
+      </div>
+      <div class="icon-btn" onclick="openModal('modalNewMember')">➕</div>
+      <div class="icon-btn">
+        🔔
+        <span class="notif-dot"></span>
+      </div>
+      <div class="icon-btn">🌙</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ══════════ DASHBOARD ══════════ -->
+    <div id="view-dashboard" class="view active">
+
+      <div class="section-header">
+        <div>
+          <div class="section-title">Bienvenido, José 👋</div>
+          <div class="section-sub">Jueves, 26 de Febrero 2026 — Resumen general del sistema</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm">📅 Este mes</button>
+          <button class="btn btn-primary btn-sm">Exportar</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card accent">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-label">Miembros Activos</div>
+          <div class="kpi-value accent">487</div>
+          <div class="kpi-delta up">↑ 12.4% vs mes anterior</div>
+        </div>
+        <div class="kpi-card success">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-label">Ingresos Mensuales</div>
+          <div class="kpi-value success">$84,320</div>
+          <div class="kpi-delta up">↑ 8.1% vs mes anterior</div>
+        </div>
+        <div class="kpi-card danger">
+          <div class="kpi-icon">⚠️</div>
+          <div class="kpi-label">Membresías Vencidas</div>
+          <div class="kpi-value danger">23</div>
+          <div class="kpi-delta down">↑ 3 desde última semana</div>
+        </div>
+        <div class="kpi-card info">
+          <div class="kpi-icon">📊</div>
+          <div class="kpi-label">Tasa de Retención</div>
+          <div class="kpi-value info">91.2%</div>
+          <div class="kpi-delta up">↑ 2.3% vs mes anterior</div>
+        </div>
+      </div>
+
+      <!-- Alertas -->
+      <div class="alerts-col">
+        <div class="alert alert-danger">
+          <span class="alert-icon">🚨</span>
+          <div>
+            <div class="alert-title">23 membresías vencidas requieren atención</div>
+            <div class="alert-body">Los miembros afectados llevan más de 7 días sin renovar. Se recomienda enviar recordatorio.</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto;flex-shrink:0">Ver</button>
+        </div>
+        <div class="alert alert-warning">
+          <span class="alert-icon">⚠️</span>
+          <div>
+            <div class="alert-title">Máquina de Prensa de Piernas en mantenimiento</div>
+            <div class="alert-body">Reportada el 24/02. Estimado de reparación: 3 días.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Ingresos Mensuales</div>
+              <div class="chart-sub">Últimos 12 meses</div>
+            </div>
+            <div class="tabs">
+              <div class="tab active">12M</div>
+              <div class="tab">6M</div>
+              <div class="tab">3M</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Membresías</div>
+              <div class="chart-sub">Distribución actual</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="membershipChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Nuevos Miembros</div>
+              <div class="chart-sub">Por semana</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="newMembersChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Asistencia Diaria</div>
+              <div class="chart-sub">Esta semana</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="attendanceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════ MEMBERS ══════════ -->
+    <div id="view-members" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Gestión de Miembros</div>
+          <div class="section-sub">487 miembros activos en el sistema</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm">📥 Importar</button>
+          <button class="btn btn-primary" onclick="openModal('modalNewMember')">+ Nuevo Miembro</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div class="search-bar" style="min-width:200px">
+            <span style="color:var(--text-muted)">🔍</span>
+            <input type="text" placeholder="Buscar por nombre o email...">
+          </div>
+          <div class="filter-chip active">Todos (487)</div>
+          <div class="filter-chip">Activos (441)</div>
+          <div class="filter-chip">Vencidos (23)</div>
+          <div class="filter-chip">Suspendidos (11)</div>
+          <div class="filter-chip" style="margin-left:auto">
+            🔽 Filtrar
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Miembro</th>
+              <th>Membresía</th>
+              <th>Estado</th>
+              <th>Vence</th>
+              <th>Rutina</th>
+              <th>Dieta</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="member-cell">
+                  <div class="member-avatar" style="background:linear-gradient(135deg,#d4b84a,#8b6914);color:#000">ML</div>
+                  <div>
+                    <div class="member-name">María López</div>
+                    <div class="member-email">maria@email.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-accent">Premium</span></td>
+              <td><span class="badge badge-success"><span class="badge-dot"></span>Activo</span></td>
+              <td>15/04/2026</td>
+              <td><span class="badge badge-muted">Fuerza Avanzada</span></td>
+              <td><span class="badge badge-muted">Keto Pro</span></td>
+              <td>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-sm" onclick="navigate('member-detail', null)">👁 Ver</button>
+                  <button class="btn btn-ghost btn-sm">✏️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="member-cell">
+                  <div class="member-avatar" style="background:linear-gradient(135deg,#60a5fa,#1e40af);color:#fff">JR</div>
+                  <div>
+                    <div class="member-name">Juan Ramírez</div>
+                    <div class="member-email">juan.r@email.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-muted">Básica</span></td>
+              <td><span class="badge badge-success"><span class="badge-dot"></span>Activo</span></td>
+              <td>01/03/2026</td>
+              <td><span class="badge badge-muted">Cardio Mix</span></td>
+              <td><span class="text-muted text-xs">No asignada</span></td>
+              <td>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-sm" onclick="navigate('member-detail', null)">👁 Ver</button>
+                  <button class="btn btn-ghost btn-sm">✏️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="member-cell">
+                  <div class="member-avatar" style="background:linear-gradient(135deg,#f87171,#991b1b);color:#fff">AG</div>
+                  <div>
+                    <div class="member-name">Ana González</div>
+                    <div class="member-email">ana.g@email.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-accent">Premium</span></td>
+              <td><span class="badge badge-danger"><span class="badge-dot"></span>Vencida</span></td>
+              <td>20/02/2026</td>
+              <td><span class="badge badge-muted">Hipertrofia 3x</span></td>
+              <td><span class="badge badge-muted">Volumen Plus</span></td>
+              <td>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-sm" onclick="navigate('member-detail', null)">👁 Ver</button>
+                  <button class="btn btn-primary btn-sm">Renovar</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="member-cell">
+                  <div class="member-avatar" style="background:linear-gradient(135deg,#3ecf8e,#065f46);color:#fff">CM</div>
+                  <div>
+                    <div class="member-name">Carlos Medina</div>
+                    <div class="member-email">carlosm@email.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-warning" style="background:rgba(251,146,60,0.12);color:#fb923c;border:1px solid rgba(251,146,60,0.25)">VIP</span></td>
+              <td><span class="badge badge-success"><span class="badge-dot"></span>Activo</span></td>
+              <td>30/06/2026</td>
+              <td><span class="badge badge-muted">Elite Powerlifting</span></td>
+              <td><span class="badge badge-muted">Alto Rendimiento</span></td>
+              <td>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-sm" onclick="navigate('member-detail', null)">👁 Ver</button>
+                  <button class="btn btn-ghost btn-sm">✏️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="member-cell">
+                  <div class="member-avatar" style="background:linear-gradient(135deg,#a78bfa,#5b21b6);color:#fff">LS</div>
+                  <div>
+                    <div class="member-name">Laura Sánchez</div>
+                    <div class="member-email">lsanchez@email.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge badge-muted">Básica</span></td>
+              <td><span class="badge badge-warning"><span class="badge-dot"></span>Suspendida</span></td>
+              <td>10/03/2026</td>
+              <td><span class="text-muted text-xs">No asignada</span></td>
+              <td><span class="text-muted text-xs">No asignada</span></td>
+              <td>
+                <div class="flex gap-2">
+                  <button class="btn btn-ghost btn-sm" onclick="navigate('member-detail', null)">👁 Ver</button>
+                  <button class="btn btn-ghost btn-sm">✏️</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════ MEMBER DETAIL ══════════ -->
+    <div id="view-member-detail" class="view">
+      <div class="section-header">
+        <div class="flex items-center gap-3">
+          <button class="btn btn-ghost btn-sm" onclick="navigate('members', null)">← Volver</button>
+          <div>
+            <div class="section-title">Perfil de Miembro</div>
+            <div class="section-sub">Información completa y asignaciones</div>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm">🗑 Eliminar</button>
+          <button class="btn btn-primary">✏️ Editar Perfil</button>
+        </div>
+      </div>
+
+      <div class="member-detail-grid">
+        <div class="member-profile-card">
+          <div class="profile-avatar-lg" style="background:linear-gradient(135deg,#d4b84a,#8b6914);color:#000">ML</div>
+          <div class="profile-name">María López</div>
+          <div class="profile-meta">📧 maria@email.com</div>
+          <span class="badge badge-success"><span class="badge-dot"></span>Activo</span>
+
+          <div class="divider"></div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-val">6</div>
+              <div class="profile-stat-label">Meses</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val">94</div>
+              <div class="profile-stat-label">Visitas</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val">-8kg</div>
+              <div class="profile-stat-label">Progreso</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val">★ 4.8</div>
+              <div class="profile-stat-label">Satisf.</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <div class="info-row">
+            <span class="info-label">Teléfono</span>
+            <span class="info-value">+54 9 351 555-0100</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Edad</span>
+            <span class="info-value">28 años</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Objetivo</span>
+            <span class="info-value">Pérdida de peso</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Miembro desde</span>
+            <span class="info-value">Ago 2025</span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <!-- Membresía -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">💳 Membresía Activa</div>
+              <span class="badge badge-accent">Premium</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+              <div class="profile-stat">
+                <div class="profile-stat-label">Vence</div>
+                <div style="font-size:15px;font-weight:700;color:var(--text-primary)">15/04/2026</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-label">Valor</div>
+                <div style="font-size:15px;font-weight:700;color:var(--accent)">$12,500/mes</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-label">Días restantes</div>
+                <div style="font-size:15px;font-weight:700;color:var(--success)">48 días</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rutina -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">📅 Rutina Asignada</div>
+              <button class="btn btn-ghost btn-sm">Cambiar</button>
+            </div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:10px">Fuerza Avanzada 4x</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+              <span class="badge badge-muted">Lun: Pecho</span>
+              <span class="badge badge-muted">Mar: Espalda</span>
+              <span class="badge badge-muted">Jue: Piernas</span>
+              <span class="badge badge-muted">Vie: Hombros</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Instructor</span>
+              <span class="info-value">Prof. Roberto Gómez</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Nivel</span>
+              <span class="info-value"><span class="badge badge-warning">Avanzado</span></span>
+            </div>
+          </div>
+
+          <!-- Dieta -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">🥗 Dieta Asignada</div>
+              <button class="btn btn-ghost btn-sm">Cambiar</button>
+            </div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:6px">Keto Pro — 1,800 kcal/día</div>
+            <div style="display:flex;gap:16px;font-size:13px;color:var(--text-muted);margin-bottom:14px">
+              <span>🥩 Proteína: 140g</span>
+              <span>🥑 Grasa: 90g</span>
+              <span>🌾 Carbo: 40g</span>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--info)">Proteína</span><span>37%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:37%;background:#60a5fa"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--warning)">Grasa</span><span>46%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:46%;background:#fb923c"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--success)">Carbohidratos</span><span>17%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:17%;background:#3ecf8e"></div></div>
+            </div>
+          </div>
+
+          <!-- Progreso -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">📈 Progreso Físico</div>
+              <button class="btn btn-ghost btn-sm">Ver historial</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+              <div class="profile-stat">
+                <div class="profile-stat-label">Peso actual</div>
+                <div style="font-size:20px;font-weight:700;color:var(--accent)">62 kg</div>
+                <div class="text-xs text-muted mt-1">Inicial: 70 kg</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-label">% Grasa</div>
+                <div style="font-size:20px;font-weight:700;color:var(--success)">22%</div>
+                <div class="text-xs text-muted mt-1">Inicial: 29%</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-label">IMC</div>
+                <div style="font-size:20px;font-weight:700;color:var(--info)">21.8</div>
+                <div class="text-xs text-muted mt-1">Saludable</div>
+              </div>
+            </div>
+            <div style="margin-top:14px">
+              <div class="info-row"><span class="info-label">Progreso hacia objetivo</span><span class="info-value text-success">80%</span></div>
+              <div class="progress-track mt-2"><div class="progress-fill" style="width:80%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ MEMBERSHIPS ══════════ -->
+    <div id="view-memberships" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Planes de Membresía</div>
+          <div class="section-sub">Administrá los planes y precios del gimnasio</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modalNewMembership')">+ Nueva Membresía</button>
+      </div>
+
+      <div class="cards-grid">
+        <div class="membership-card">
+          <div class="m-plan-name">Plan Básico</div>
+          <div class="m-price">$6,500 <span class="m-price-period">/mes</span></div>
+          <div class="divider"></div>
+          <div class="m-features">
+            <div class="m-feature"><span class="m-feature-check">✓</span> Acceso sala principal</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Horario estándar (7am-8pm)</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> 1 clase grupal/semana</div>
+            <div class="m-feature" style="opacity:0.4">✗ Clases personalizadas</div>
+            <div class="m-feature" style="opacity:0.4">✗ Acceso 24/7</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+            <span class="badge badge-success">Activa</span>
+            <span class="text-muted text-sm">231 miembros</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-ghost btn-sm" style="flex:1">✏️ Editar</button>
+            <button class="btn btn-danger btn-sm">🗑</button>
+          </div>
+        </div>
+
+        <div class="membership-card featured">
+          <div class="m-plan-name">Plan Premium</div>
+          <div class="m-price">$12,500 <span class="m-price-period">/mes</span></div>
+          <div class="divider"></div>
+          <div class="m-features">
+            <div class="m-feature"><span class="m-feature-check">✓</span> Acceso sala principal</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Acceso 24/7</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Clases grupales ilimitadas</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Rutina personalizada</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Plan nutricional incluido</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+            <span class="badge badge-success">Activa</span>
+            <span class="text-muted text-sm">198 miembros</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-ghost btn-sm" style="flex:1">✏️ Editar</button>
+            <button class="btn btn-danger btn-sm">🗑</button>
+          </div>
+        </div>
+
+        <div class="membership-card">
+          <div class="m-plan-name">Plan VIP</div>
+          <div class="m-price">$24,000 <span class="m-price-period">/mes</span></div>
+          <div class="divider"></div>
+          <div class="m-features">
+            <div class="m-feature"><span class="m-feature-check">✓</span> Todo lo de Premium</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Entrenador personal dedicado</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Suplementos básicos incluidos</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Análisis corporal mensual</div>
+            <div class="m-feature"><span class="m-feature-check">✓</span> Área VIP exclusiva</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+            <span class="badge badge-success">Activa</span>
+            <span class="text-muted text-sm">58 miembros</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn btn-ghost btn-sm" style="flex:1">✏️ Editar</button>
+            <button class="btn btn-danger btn-sm">🗑</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ DIETS ══════════ -->
+    <div id="view-diets" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Planes de Dieta</div>
+          <div class="section-sub">Fichas nutricionales y asignación a miembros</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modalNewDiet')">+ Nueva Dieta</button>
+      </div>
+
+      <div class="cards-grid">
+        <div class="diet-card">
+          <div class="diet-header">
+            <div class="flex items-center gap-2" style="margin-bottom:8px">
+              <span class="badge badge-accent">Keto</span>
+              <span class="badge badge-warning">Definición</span>
+            </div>
+            <div class="diet-name">Keto Pro</div>
+            <div class="diet-kcal">1,800 <span style="font-size:14px;color:var(--text-muted)">kcal/día</span></div>
+          </div>
+          <div class="diet-body">
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--info)">Proteína</span><span>140g — 37%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:37%;background:#60a5fa"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--warning)">Grasa</span><span>90g — 46%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:46%;background:#fb923c"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--success)">Carbohidratos</span><span>40g — 17%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:17%;background:#3ecf8e"></div></div>
+            </div>
+            <div class="divider"></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span class="text-muted">Asignada a</span>
+              <span style="font-weight:600">42 miembros</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-ghost btn-sm" style="flex:1">Ver ficha</button>
+              <button class="btn btn-primary btn-sm">Asignar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="diet-card">
+          <div class="diet-header">
+            <div class="flex items-center gap-2" style="margin-bottom:8px">
+              <span class="badge badge-info" style="background:rgba(96,165,250,0.12);color:var(--info);border:1px solid rgba(96,165,250,0.25)">Volumen</span>
+              <span class="badge badge-success">Ganancia</span>
+            </div>
+            <div class="diet-name">Volumen Plus</div>
+            <div class="diet-kcal">3,200 <span style="font-size:14px;color:var(--text-muted)">kcal/día</span></div>
+          </div>
+          <div class="diet-body">
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--info)">Proteína</span><span>200g — 31%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:31%;background:#60a5fa"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--warning)">Grasa</span><span>80g — 23%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:23%;background:#fb923c"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--success)">Carbohidratos</span><span>380g — 46%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:46%;background:#3ecf8e"></div></div>
+            </div>
+            <div class="divider"></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span class="text-muted">Asignada a</span>
+              <span style="font-weight:600">78 miembros</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-ghost btn-sm" style="flex:1">Ver ficha</button>
+              <button class="btn btn-primary btn-sm">Asignar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="diet-card">
+          <div class="diet-header">
+            <div class="flex items-center gap-2" style="margin-bottom:8px">
+              <span class="badge badge-success">Rendimiento</span>
+            </div>
+            <div class="diet-name">Alto Rendimiento</div>
+            <div class="diet-kcal">2,800 <span style="font-size:14px;color:var(--text-muted)">kcal/día</span></div>
+          </div>
+          <div class="diet-body">
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--info)">Proteína</span><span>220g — 39%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:39%;background:#60a5fa"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--warning)">Grasa</span><span>70g — 22%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:22%;background:#fb923c"></div></div>
+            </div>
+            <div class="macro-bar">
+              <div class="macro-label"><span style="color:var(--success)">Carbohidratos</span><span>280g — 39%</span></div>
+              <div class="macro-track"><div class="macro-fill" style="width:39%;background:#3ecf8e"></div></div>
+            </div>
+            <div class="divider"></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px">
+              <span class="text-muted">Asignada a</span>
+              <span style="font-weight:600">31 miembros</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-ghost btn-sm" style="flex:1">Ver ficha</button>
+              <button class="btn btn-primary btn-sm">Asignar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ EXERCISES ══════════ -->
+    <div id="view-exercises" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Banco de Ejercicios</div>
+          <div class="section-sub">64 ejercicios en la biblioteca</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modalNewExercise')">+ Nuevo Ejercicio</button>
+      </div>
+
+      <div class="table-toolbar" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px">
+        <div class="search-bar" style="min-width:200px">
+          <span style="color:var(--text-muted)">🔍</span>
+          <input type="text" placeholder="Buscar ejercicio...">
+        </div>
+        <div class="filter-chip active">Todos</div>
+        <div class="filter-chip">Pecho</div>
+        <div class="filter-chip">Espalda</div>
+        <div class="filter-chip">Piernas</div>
+        <div class="filter-chip">Hombros</div>
+        <div class="filter-chip">Bíceps/Tríceps</div>
+        <div class="filter-chip">Cardio</div>
+      </div>
+
+      <div class="cards-grid" style="grid-template-columns:repeat(4,1fr)">
+        <div class="exercise-card">
+          <div class="exercise-thumb" style="background:linear-gradient(135deg,#1a1a24,#22222e)">
+            🏋️
+            <span class="exercise-difficulty badge badge-danger">Avanzado</span>
+          </div>
+          <div class="exercise-body">
+            <div class="exercise-name">Press de Banca</div>
+            <div class="exercise-tags">
+              <span class="badge badge-muted">Pecho</span>
+              <span class="badge badge-muted">Tríceps</span>
+              <span class="badge badge-muted">Barra</span>
+            </div>
+            <div class="info-row mt-2" style="font-size:12px">
+              <span class="text-muted">Máquina</span>
+              <span>Banco plano</span>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px">Ver detalle ▶</button>
+          </div>
+        </div>
+
+        <div class="exercise-card">
+          <div class="exercise-thumb" style="background:linear-gradient(135deg,#1a1a24,#22222e)">
+            🦵
+            <span class="exercise-difficulty badge badge-warning">Intermedio</span>
+          </div>
+          <div class="exercise-body">
+            <div class="exercise-name">Sentadilla Libre</div>
+            <div class="exercise-tags">
+              <span class="badge badge-muted">Piernas</span>
+              <span class="badge badge-muted">Glúteos</span>
+            </div>
+            <div class="info-row mt-2" style="font-size:12px">
+              <span class="text-muted">Máquina</span>
+              <span>Rack de Sentadilla</span>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px">Ver detalle ▶</button>
+          </div>
+        </div>
+
+        <div class="exercise-card">
+          <div class="exercise-thumb" style="background:linear-gradient(135deg,#1a1a24,#22222e)">
+            💪
+            <span class="exercise-difficulty badge badge-success">Básico</span>
+          </div>
+          <div class="exercise-body">
+            <div class="exercise-name">Curl de Bíceps</div>
+            <div class="exercise-tags">
+              <span class="badge badge-muted">Bíceps</span>
+              <span class="badge badge-muted">Mancuernas</span>
+            </div>
+            <div class="info-row mt-2" style="font-size:12px">
+              <span class="text-muted">Máquina</span>
+              <span>Banco Scott</span>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px">Ver detalle ▶</button>
+          </div>
+        </div>
+
+        <div class="exercise-card">
+          <div class="exercise-thumb" style="background:linear-gradient(135deg,#1a1a24,#22222e)">
+            🔄
+            <span class="exercise-difficulty badge badge-danger">Avanzado</span>
+          </div>
+          <div class="exercise-body">
+            <div class="exercise-name">Peso Muerto</div>
+            <div class="exercise-tags">
+              <span class="badge badge-muted">Espalda</span>
+              <span class="badge badge-muted">Isquio</span>
+            </div>
+            <div class="info-row mt-2" style="font-size:12px">
+              <span class="text-muted">Máquina</span>
+              <span>Peso libre</span>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px">Ver detalle ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ ROUTINES ══════════ -->
+    <div id="view-routines" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Rutinas de Entrenamiento</div>
+          <div class="section-sub">Creá y administrá planes semanales</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm" onclick="navigate('members', null)">👥 Asignar a Miembro</button>
+          <button class="btn btn-primary">+ Nueva Rutina</button>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="planner-header">
+          <div>
+            <div class="chart-title">📅 Fuerza Avanzada 4x — Planner Semanal</div>
+            <div class="chart-sub">Asignada a 48 miembros · Nivel: Avanzado</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-ghost btn-sm">✏️ Editar</button>
+            <button class="btn btn-primary btn-sm">Asignar</button>
+          </div>
+        </div>
+        <div class="days-grid">
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Lunes</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px">Pecho</div>
+            </div>
+            <div class="day-exercises">
+              <div class="exercise-pill accent">
+                <div class="exercise-pill-name">Press de Banca</div>
+                <div class="exercise-pill-meta">4 × 8-10 · 80kg</div>
+              </div>
+              <div class="exercise-pill accent">
+                <div class="exercise-pill-name">Aperturas</div>
+                <div class="exercise-pill-meta">3 × 12 · 20kg</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Press Inclinado</div>
+                <div class="exercise-pill-meta">4 × 10 · 70kg</div>
+              </div>
+              <div class="add-exercise-btn">+</div>
+            </div>
+          </div>
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Martes</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px">Espalda</div>
+            </div>
+            <div class="day-exercises">
+              <div class="exercise-pill accent">
+                <div class="exercise-pill-name">Peso Muerto</div>
+                <div class="exercise-pill-meta">4 × 5 · 120kg</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Dominadas</div>
+                <div class="exercise-pill-meta">3 × Fallo</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Remo con Barra</div>
+                <div class="exercise-pill-meta">4 × 8 · 90kg</div>
+              </div>
+              <div class="add-exercise-btn">+</div>
+            </div>
+          </div>
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Miércoles</div>
+              <div style="font-size:10px;color:var(--success);margin-top:3px">Descanso</div>
+            </div>
+            <div class="day-exercises" style="align-items:center;justify-content:center;opacity:0.3">
+              <div style="font-size:32px;text-align:center">😴</div>
+              <div style="font-size:11px;text-align:center;color:var(--text-muted)">Día de recuperación</div>
+            </div>
+          </div>
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Jueves</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px">Piernas</div>
+            </div>
+            <div class="day-exercises">
+              <div class="exercise-pill accent">
+                <div class="exercise-pill-name">Sentadilla</div>
+                <div class="exercise-pill-meta">5 × 5 · 110kg</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Prensa</div>
+                <div class="exercise-pill-meta">4 × 12 · 200kg</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Extensión</div>
+                <div class="exercise-pill-meta">3 × 15</div>
+              </div>
+              <div class="add-exercise-btn">+</div>
+            </div>
+          </div>
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Viernes</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px">Hombros</div>
+            </div>
+            <div class="day-exercises">
+              <div class="exercise-pill accent">
+                <div class="exercise-pill-name">Press Militar</div>
+                <div class="exercise-pill-meta">4 × 8 · 60kg</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Elevaciones</div>
+                <div class="exercise-pill-meta">4 × 12 · 14kg</div>
+              </div>
+              <div class="add-exercise-btn">+</div>
+            </div>
+          </div>
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Sábado</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:3px">Brazos</div>
+            </div>
+            <div class="day-exercises">
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Curl Bíceps</div>
+                <div class="exercise-pill-meta">4 × 12 · 22kg</div>
+              </div>
+              <div class="exercise-pill">
+                <div class="exercise-pill-name">Press Francés</div>
+                <div class="exercise-pill-meta">3 × 12 · 30kg</div>
+              </div>
+              <div class="add-exercise-btn">+</div>
+            </div>
+          </div>
+          <div class="day-col">
+            <div class="day-header">
+              <div class="day-name">Domingo</div>
+              <div style="font-size:10px;color:var(--success);margin-top:3px">Descanso</div>
+            </div>
+            <div class="day-exercises" style="align-items:center;justify-content:center;opacity:0.3">
+              <div style="font-size:32px;text-align:center">😴</div>
+              <div style="font-size:11px;text-align:center;color:var(--text-muted)">Día de recuperación</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ GYM MAP ══════════ -->
+    <div id="view-gymmap" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Plano del Gimnasio</div>
+          <div class="section-sub">Vista interactiva de instalaciones y máquinas</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm">🔧 Editar plano</button>
+          <button class="btn btn-primary btn-sm">+ Agregar máquina</button>
+        </div>
+      </div>
+
+      <div class="gym-map-container">
+        <div class="gym-map-header">
+          <div class="tabs">
+            <div class="tab active">Planta Baja</div>
+            <div class="tab">Planta Alta</div>
+            <div class="tab">Área VIP</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-ghost btn-sm">Disponible (42)</button>
+            <button class="btn btn-ghost btn-sm">Ocupado (12)</button>
+            <button class="btn btn-ghost btn-sm">Mantenimiento (2)</button>
+          </div>
+        </div>
+
+        <div class="gym-map-svg-wrap">
+          <svg viewBox="0 0 900 500" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg">
+            <!-- Floor -->
+            <rect width="900" height="500" fill="#0d0d12"/>
+            <!-- Grid -->
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e1e28" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="900" height="500" fill="url(#grid)"/>
+
+            <!-- Walls -->
+            <rect x="20" y="20" width="860" height="460" fill="none" stroke="#2a2a35" stroke-width="2" rx="8"/>
+
+            <!-- Zone labels -->
+            <text x="70" y="55" fill="#4a4a58" font-size="11" font-family="DM Sans" font-weight="700" letter-spacing="2">ZONA CARDIO</text>
+            <text x="340" y="55" fill="#4a4a58" font-size="11" font-family="DM Sans" font-weight="700" letter-spacing="2">ZONA DE PESAS LIBRES</text>
+            <text x="660" y="55" fill="#4a4a58" font-size="11" font-family="DM Sans" font-weight="700" letter-spacing="2">ZONA MÁQUINAS</text>
+            <text x="70" y="325" fill="#4a4a58" font-size="11" font-family="DM Sans" font-weight="700" letter-spacing="2">ÁREA FUNCIONAL</text>
+            <text x="580" y="325" fill="#4a4a58" font-size="11" font-family="DM Sans" font-weight="700" letter-spacing="2">VESTUARIOS</text>
+
+            <!-- Dividers -->
+            <line x1="310" y1="20" x2="310" y2="300" stroke="#2a2a35" stroke-width="1" stroke-dasharray="6,4"/>
+            <line x1="630" y1="20" x2="630" y2="300" stroke="#2a2a35" stroke-width="1" stroke-dasharray="6,4"/>
+            <line x1="20" y1="300" x2="900" y2="300" stroke="#2a2a35" stroke-width="1" stroke-dasharray="6,4"/>
+            <line x1="530" y1="300" x2="530" y2="480" stroke="#2a2a35" stroke-width="1" stroke-dasharray="6,4"/>
+
+            <!-- ── CARDIO MACHINES ── -->
+            <!-- Treadmill 1 - Available -->
+            <g class="machine" style="cursor:pointer" onclick="showMachineInfo('Cinta de Correr #1', 'Disponible')">
+              <rect x="40" y="70" width="60" height="30" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="70" y="88" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">🏃 Cinta 1</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Cinta de Correr #2', 'Disponible')">
+              <rect x="110" y="70" width="60" height="30" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="140" y="88" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">🏃 Cinta 2</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Cinta de Correr #3', 'Ocupada')">
+              <rect x="180" y="70" width="60" height="30" rx="6" fill="#1a1a24" stroke="#f87171" stroke-width="1.5"/>
+              <text x="210" y="88" fill="#f87171" font-size="9" text-anchor="middle" font-family="DM Sans">🏃 Cinta 3</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Elíptica #1', 'Disponible')">
+              <rect x="40" y="115" width="60" height="30" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="70" y="133" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">🔄 Elíp. 1</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Elíptica #2', 'Disponible')">
+              <rect x="110" y="115" width="60" height="30" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="140" y="133" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">🔄 Elíp. 2</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Bicicleta Estática #1', 'Ocupada')">
+              <rect x="40" y="160" width="60" height="30" rx="6" fill="#1a1a24" stroke="#f87171" stroke-width="1.5"/>
+              <text x="70" y="178" fill="#f87171" font-size="9" text-anchor="middle" font-family="DM Sans">🚴 Bici 1</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Bicicleta Estática #2', 'Disponible')">
+              <rect x="110" y="160" width="60" height="30" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="140" y="178" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">🚴 Bici 2</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Remo #1', 'Disponible')">
+              <rect x="180" y="115" width="65" height="30" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="212" y="133" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">🚣 Remo 1</text>
+            </g>
+
+            <!-- ── FREE WEIGHTS ── -->
+            <!-- Racks -->
+            <g style="cursor:pointer" onclick="showMachineInfo('Rack de Sentadilla #1', 'Disponible')">
+              <rect x="330" y="70" width="80" height="45" rx="6" fill="#1a1a24" stroke="#d4b84a" stroke-width="1.5"/>
+              <text x="370" y="90" fill="#d4b84a" font-size="9" text-anchor="middle" font-family="DM Sans">🏋 Rack</text>
+              <text x="370" y="104" fill="#d4b84a" font-size="8" text-anchor="middle" font-family="DM Sans">Sentadilla #1</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Rack de Sentadilla #2', 'Ocupado')">
+              <rect x="420" y="70" width="80" height="45" rx="6" fill="#1a1a24" stroke="#f87171" stroke-width="1.5"/>
+              <text x="460" y="90" fill="#f87171" font-size="9" text-anchor="middle" font-family="DM Sans">🏋 Rack</text>
+              <text x="460" y="104" fill="#f87171" font-size="8" text-anchor="middle" font-family="DM Sans">Sentadilla #2</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Banco de Pesas Plano #1', 'Disponible')">
+              <rect x="330" y="130" width="80" height="35" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="370" y="148" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">Banco</text>
+              <text x="370" y="160" fill="#3ecf8e" font-size="8" text-anchor="middle" font-family="DM Sans">Plano #1</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Banco de Pesas Plano #2', 'Ocupado')">
+              <rect x="420" y="130" width="80" height="35" rx="6" fill="#1a1a24" stroke="#f87171" stroke-width="1.5"/>
+              <text x="460" y="148" fill="#f87171" font-size="9" text-anchor="middle" font-family="DM Sans">Banco</text>
+              <text x="460" y="160" fill="#f87171" font-size="8" text-anchor="middle" font-family="DM Sans">Plano #2</text>
+            </g>
+            <!-- Mancuernero -->
+            <g style="cursor:pointer" onclick="showMachineInfo('Mancuernero', 'Disponible')">
+              <rect x="510" y="70" width="100" height="100" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="560" y="115" fill="#3ecf8e" font-size="20" text-anchor="middle" font-family="DM Sans">🔩</text>
+              <text x="560" y="140" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">Mancuernero</text>
+              <text x="560" y="152" fill="#3ecf8e" font-size="8" text-anchor="middle" font-family="DM Sans">5-50 kg</text>
+            </g>
+            <!-- Barras olímpicas -->
+            <g style="cursor:pointer" onclick="showMachineInfo('Barras Olímpicas', 'Disponible')">
+              <rect x="330" y="180" width="170" height="30" rx="6" fill="#1a1a24" stroke="#60a5fa" stroke-width="1.5"/>
+              <text x="415" y="198" fill="#60a5fa" font-size="9" text-anchor="middle" font-family="DM Sans">Barras Olímpicas · 20–50 kg</text>
+            </g>
+            <!-- Peso muerto area -->
+            <g style="cursor:pointer" onclick="showMachineInfo('Plataforma Peso Muerto', 'Disponible')">
+              <rect x="330" y="225" width="170" height="50" rx="6" fill="#1a1a24" stroke="#d4b84a" stroke-width="1.5"/>
+              <text x="415" y="248" fill="#d4b84a" font-size="10" text-anchor="middle" font-family="DM Sans">⬛ Plataforma</text>
+              <text x="415" y="262" fill="#d4b84a" font-size="9" text-anchor="middle" font-family="DM Sans">Peso Muerto</text>
+            </g>
+
+            <!-- ── MACHINES ZONE ── -->
+            <g style="cursor:pointer" onclick="showMachineInfo('Prensa de Piernas', 'Mantenimiento')">
+              <rect x="650" y="70" width="85" height="50" rx="6" fill="#1a1a24" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="6,3"/>
+              <text x="692" y="92" fill="#fb923c" font-size="9" text-anchor="middle" font-family="DM Sans">🔧 Prensa</text>
+              <text x="692" y="106" fill="#fb923c" font-size="8" text-anchor="middle" font-family="DM Sans">Mantenimiento</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Polea Alta', 'Disponible')">
+              <rect x="745" y="70" width="80" height="50" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="785" y="92" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">Polea Alta</text>
+              <text x="785" y="106" fill="#3ecf8e" font-size="8" text-anchor="middle" font-family="DM Sans">Disponible</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Polea Baja', 'Ocupada')">
+              <rect x="650" y="135" width="80" height="40" rx="6" fill="#1a1a24" stroke="#f87171" stroke-width="1.5"/>
+              <text x="690" y="158" fill="#f87171" font-size="9" text-anchor="middle" font-family="DM Sans">Polea Baja</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Pec Deck', 'Disponible')">
+              <rect x="745" y="135" width="80" height="40" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="785" y="158" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">Pec Deck</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Extensión de Piernas', 'Disponible')">
+              <rect x="650" y="190" width="80" height="40" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="690" y="208" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">Ext. Piernas</text>
+              <text x="690" y="220" fill="#3ecf8e" font-size="8" text-anchor="middle" font-family="DM Sans">Disponible</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Curl Femoral', 'Disponible')">
+              <rect x="745" y="190" width="80" height="40" rx="6" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="785" y="208" fill="#3ecf8e" font-size="9" text-anchor="middle" font-family="DM Sans">Curl Femoral</text>
+              <text x="785" y="220" fill="#3ecf8e" font-size="8" text-anchor="middle" font-family="DM Sans">Disponible</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('Máquina de Hombros', 'Ocupada')">
+              <rect x="650" y="245" width="80" height="40" rx="6" fill="#1a1a24" stroke="#f87171" stroke-width="1.5"/>
+              <text x="690" y="268" fill="#f87171" font-size="9" text-anchor="middle" font-family="DM Sans">Hombros</text>
+            </g>
+            <g style="cursor:pointer" onclick="showMachineInfo('TRX', 'Disponible')">
+              <rect x="745" y="245" width="80" height="40" rx="6" fill="#1a1a24" stroke="#d4b84a" stroke-width="1.5"/>
+              <text x="785" y="268" fill="#d4b84a" font-size="9" text-anchor="middle" font-family="DM Sans">TRX Suspensión</text>
+            </g>
+
+            <!-- ── FUNCTIONAL AREA ── -->
+            <g>
+              <rect x="40" y="330" width="460" height="130" rx="8" fill="#0f0f18" stroke="#2a2a35" stroke-width="1"/>
+              <!-- Battle ropes -->
+              <rect x="55" y="345" width="60" height="30" rx="5" fill="#1a1a24" stroke="#60a5fa" stroke-width="1.5"/>
+              <text x="85" y="364" fill="#60a5fa" font-size="8" text-anchor="middle" font-family="DM Sans">Battle Ropes</text>
+              <!-- Kettlebells -->
+              <rect x="125" y="345" width="60" height="30" rx="5" fill="#1a1a24" stroke="#3ecf8e" stroke-width="1.5"/>
+              <text x="155" y="364" fill="#3ecf8e" font-size="8" text-anchor="middle" font-family="DM Sans">Kettlebells</text>
+              <!-- Cajas pliométricas -->
+              <rect x="195" y="345" width="70" height="30" rx="5" fill="#1a1a24" stroke="#d4b84a" stroke-width="1.5"/>
+              <text x="230" y="364" fill="#d4b84a" font-size="8" text-anchor="middle" font-family="DM Sans">Cajas Pliométr.</text>
+              <!-- TRX -->
+              <rect x="275" y="345" width="60" height="30" rx="5" fill="#1a1a24" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="305" y="364" fill="#a78bfa" font-size="8" text-anchor="middle" font-family="DM Sans">TRX Area</text>
+              <!-- Espacio libre -->
+              <text x="250" y="440" fill="#2a2a35" font-size="28" text-anchor="middle" font-family="DM Sans" font-weight="700">ESPACIO LIBRE</text>
+            </g>
+
+            <!-- ── LOCKER ROOMS ── -->
+            <g>
+              <rect x="545" y="330" width="330" height="130" rx="8" fill="#0d0d14" stroke="#2a2a35" stroke-width="1"/>
+              <rect x="545" y="330" width="165" height="130" rx="0" fill="#0f0f18" stroke="#2a2a35" stroke-width="0.5"/>
+              <text x="627" y="400" fill="#2a2a35" font-size="18" text-anchor="middle" font-family="DM Sans" font-weight="700">♂ VARONES</text>
+              <text x="793" y="400" fill="#2a2a35" font-size="18" text-anchor="middle" font-family="DM Sans" font-weight="700">♀ MUJERES</text>
+            </g>
+
+            <!-- ── ENTRANCE ── -->
+            <rect x="410" y="466" width="80" height="14" rx="4" fill="#1a1a24" stroke="#d4b84a" stroke-width="1.5"/>
+            <text x="450" y="477" fill="#d4b84a" font-size="8" text-anchor="middle" font-family="DM Sans">🚪 ENTRADA</text>
+
+            <!-- Compass / Scale -->
+            <text x="860" y="480" fill="#2a2a35" font-size="9" text-anchor="end" font-family="DM Sans">Escala: 1:50 · DiFit Planner v1.0</text>
+          </svg>
+        </div>
+
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#3ecf8e"></div>Disponible</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Ocupado</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fb923c;border:2px dashed #fb923c;background:none"></div>Mantenimiento</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#d4b84a"></div>Zona Premium</div>
+          <div class="legend-item" style="margin-left:auto;font-size:12px">Click en una máquina para ver detalles</div>
+        </div>
+      </div>
+
+      <!-- Machine info tooltip -->
+      <div id="machineInfo" style="display:none" class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title" id="machineInfoTitle">Prensa de Piernas</div>
+            <div id="machineInfoStatus" class="chart-sub">Estado: Disponible</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('machineInfo').style.display='none'">✕</button>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div class="profile-stat" style="flex:1">
+            <div class="profile-stat-label">Última revisión</div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-primary)">12/02/2026</div>
+          </div>
+          <div class="profile-stat" style="flex:1">
+            <div class="profile-stat-label">Uso mensual</div>
+            <div style="font-size:15px;font-weight:600;color:var(--accent)">248 usos</div>
+          </div>
+          <div class="profile-stat" style="flex:1">
+            <div class="profile-stat-label">Capacidad</div>
+            <div style="font-size:15px;font-weight:600;color:var(--info)">400 kg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ REPORTS ══════════ -->
+    <div id="view-reports" class="view">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Reportes y Estadísticas</div>
+          <div class="section-sub">Análisis completo del rendimiento del gimnasio</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm">📅 Febrero 2026</button>
+          <button class="btn btn-primary">⬇ Exportar PDF</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card accent">
+          <div class="kpi-icon">💰</div>
+          <div class="kpi-label">Ingresos Totales</div>
+          <div class="kpi-value accent">$84,320</div>
+          <div class="kpi-delta up">↑ 8.1%</div>
+        </div>
+        <div class="kpi-card success">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-label">Asistencias</div>
+          <div class="kpi-value success">3,842</div>
+          <div class="kpi-delta up">↑ 5.4%</div>
+        </div>
+        <div class="kpi-card info">
+          <div class="kpi-icon">🔄</div>
+          <div class="kpi-label">Churn Rate</div>
+          <div class="kpi-value info">4.7%</div>
+          <div class="kpi-delta down">↓ 0.3% bueno</div>
+        </div>
+        <div class="kpi-card danger">
+          <div class="kpi-icon">💳</div>
+          <div class="kpi-label">Pagos Pendientes</div>
+          <div class="kpi-value danger">$12,500</div>
+          <div class="kpi-delta down">↑ 2 nuevos</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Ingresos vs Meta Mensual</div>
+              <div class="chart-sub">Meta: $90,000 — Alcanzado: 93.7%</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="reportRevenueChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Distribución de Membresías</div>
+              <div class="chart-sub">Por tipo de plan</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="reportMembChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid-3">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Uso de Máquinas</div>
+            <div class="chart-sub">Top 5 más usadas</div>
+          </div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div class="macro-label" style="font-size:12px"><span>Sentadilla</span><span style="color:var(--accent)">94%</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:94%"></div></div>
+            </div>
+            <div>
+              <div class="macro-label" style="font-size:12px"><span>Cintas</span><span style="color:var(--info)">87%</span></div>
+              <div class="progress-track"><div class="macro-fill" style="width:87%;background:#60a5fa;height:8px;border-radius:4px"></div></div>
+            </div>
+            <div>
+              <div class="macro-label" style="font-size:12px"><span>Banco Plano</span><span style="color:var(--success)">76%</span></div>
+              <div class="progress-track"><div class="macro-fill" style="width:76%;background:#3ecf8e;height:8px;border-radius:4px"></div></div>
+            </div>
+            <div>
+              <div class="macro-label" style="font-size:12px"><span>Polea Alta</span><span style="color:var(--warning)">68%</span></div>
+              <div class="progress-track"><div class="macro-fill" style="width:68%;background:#fb923c;height:8px;border-radius:4px"></div></div>
+            </div>
+            <div>
+              <div class="macro-label" style="font-size:12px"><span>Prensa</span><span style="color:var(--danger)">12%</span></div>
+              <div class="progress-track"><div class="macro-fill" style="width:12%;background:#f87171;height:8px;border-radius:4px"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Asistencia por Día</div>
+            <div class="chart-sub">Promedio este mes</div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="weeklyAttChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Objetivo de Miembros</div>
+            <div class="chart-sub">Meta: 520 miembros</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;padding-top:20px;gap:8px">
+            <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:var(--accent)">487</div>
+            <div style="font-size:13px;color:var(--text-muted)">de 520 meta</div>
+            <div style="width:100%;margin-top:12px">
+              <div class="progress-track" style="height:12px">
+                <div class="progress-fill" style="width:93.7%"></div>
+              </div>
+            </div>
+            <div class="text-sm text-success" style="margin-top:4px">93.7% alcanzado — 33 miembros para la meta</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ═══════════════════ MODALS ═══════════════════ -->
+
+<!-- New Member Modal -->
+<div id="modalNewMember" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">➕ Nuevo Miembro</div>
+      <span class="modal-close" onclick="closeModal('modalNewMember')">×</span>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Nombre</label>
+        <input class="form-input" type="text" placeholder="ej. María López">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Apellido</label>
+        <input class="form-input" type="text" placeholder="ej. González">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" placeholder="correo@email.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Teléfono</label>
+        <input class="form-input" type="tel" placeholder="+54 9 351 555-0100">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fecha de Nacimiento</label>
+        <input class="form-input" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Membresía</label>
+        <select class="form-input">
+          <option>Básica — $6,500/mes</option>
+          <option>Premium — $12,500/mes</option>
+          <option>VIP — $24,000/mes</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Objetivo</label>
+        <select class="form-input">
+          <option>Pérdida de peso</option>
+          <option>Ganancia muscular</option>
+          <option>Tonificación</option>
+          <option>Rendimiento deportivo</option>
+          <option>Salud general</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nivel</label>
+        <select class="form-input">
+          <option>Principiante</option>
+          <option>Intermedio</option>
+          <option>Avanzado</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Notas / Condiciones médicas</label>
+        <textarea class="form-input" placeholder="Alguna condición médica relevante, lesiones previas..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalNewMember')">Cancelar</button>
+      <button class="btn btn-primary">Crear Miembro</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Membership Modal -->
+<div id="modalNewMembership" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">💳 Nueva Membresía</div>
+      <span class="modal-close" onclick="closeModal('modalNewMembership')">×</span>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label">Nombre del Plan</label>
+        <input class="form-input" type="text" placeholder="ej. Plan Estudiante">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Precio Mensual ($)</label>
+        <input class="form-input" type="number" placeholder="8500">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duración (meses)</label>
+        <input class="form-input" type="number" placeholder="1" value="1">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-input" placeholder="Describe los beneficios del plan..."></textarea>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Estado</label>
+        <select class="form-input">
+          <option>Activa</option>
+          <option>Inactiva</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalNewMembership')">Cancelar</button>
+      <button class="btn btn-primary">Crear Plan</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Diet Modal -->
+<div id="modalNewDiet" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🥗 Nueva Dieta</div>
+      <span class="modal-close" onclick="closeModal('modalNewDiet')">×</span>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label">Nombre del Plan</label>
+        <input class="form-input" type="text" placeholder="ej. Mediterránea Equilibrada">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Calorías/día (kcal)</label>
+        <input class="form-input" type="number" placeholder="2000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Objetivo</label>
+        <select class="form-input">
+          <option>Definición</option>
+          <option>Volumen</option>
+          <option>Mantenimiento</option>
+          <option>Rendimiento</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Proteína (g/día)</label>
+        <input class="form-input" type="number" placeholder="150">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Grasas (g/día)</label>
+        <input class="form-input" type="number" placeholder="70">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Carbohidratos (g/día)</label>
+        <input class="form-input" type="number" placeholder="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Comidas por día</label>
+        <input class="form-input" type="number" placeholder="5">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Notas del nutricionista</label>
+        <textarea class="form-input" placeholder="Indicaciones especiales, restricciones alimentarias..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalNewDiet')">Cancelar</button>
+      <button class="btn btn-primary">Crear Dieta</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Exercise Modal -->
+<div id="modalNewExercise" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏃 Nuevo Ejercicio</div>
+      <span class="modal-close" onclick="closeModal('modalNewExercise')">×</span>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="form-label">Nombre del Ejercicio</label>
+        <input class="form-input" type="text" placeholder="ej. Press Militar con Barra">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Grupo Muscular</label>
+        <select class="form-input">
+          <option>Pecho</option>
+          <option>Espalda</option>
+          <option>Piernas</option>
+          <option>Hombros</option>
+          <option>Bíceps</option>
+          <option>Tríceps</option>
+          <option>Core</option>
+          <option>Cardio</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Dificultad</label>
+        <select class="form-input">
+          <option>Básico</option>
+          <option>Intermedio</option>
+          <option>Avanzado</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Máquina / Equipamiento</label>
+        <input class="form-input" type="text" placeholder="ej. Barra Olímpica, Rack">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">URL Video (YouTube/Vimeo)</label>
+        <input class="form-input" type="url" placeholder="https://youtube.com/...">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Descripción / Técnica</label>
+        <textarea class="form-input" placeholder="Instrucciones de ejecución correcta..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalNewExercise')">Cancelar</button>
+      <button class="btn btn-primary">Crear Ejercicio</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── NAVIGATION ───
+const views = ['dashboard','members','member-detail','memberships','diets','exercises','routines','gymmap','reports'];
+const titles = {
+  'dashboard':'Dashboard','members':'Miembros','member-detail':'Perfil de Miembro',
+  'memberships':'Membresías','diets':'Dietas','exercises':'Ejercicios',
+  'routines':'Rutinas','gymmap':'Plano del Gimnasio','reports':'Reportes'
+};
+
+function navigate(view, el) {
+  views.forEach(v => {
+    const el2 = document.getElementById('view-' + v);
+    if(el2) el2.classList.remove('active');
+  });
+  const target = document.getElementById('view-' + view);
+  if(target) target.classList.add('active');
+
+  document.getElementById('page-title').textContent = titles[view] || view;
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if(el) el.classList.add('active');
+
+  if(view === 'reports') {
+    setTimeout(() => {
+      initReportCharts();
+    }, 100);
+  }
+}
+
+// ─── MODALS ───
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', function(e) {
+    if(e.target === this) this.classList.remove('open');
+  });
+});
+
+// ─── MAP ───
+function showMachineInfo(name, status) {
+  const el = document.getElementById('machineInfo');
+  el.style.display = 'block';
+  document.getElementById('machineInfoTitle').textContent = name;
+  const statusEl = document.getElementById('machineInfoStatus');
+  statusEl.textContent = 'Estado: ' + status;
+  statusEl.style.color = status === 'Disponible' ? 'var(--success)' : status === 'Ocupada' || status === 'Ocupado' ? 'var(--danger)' : 'var(--warning)';
+}
+
+// ─── CHART.JS GLOBAL CONFIG ───
+Chart.defaults.color = '#8a8a96';
+Chart.defaults.borderColor = '#2a2a35';
+Chart.defaults.font.family = 'DM Sans';
+
+const accent = '#d4b84a';
+const success = '#3ecf8e';
+const info = '#60a5fa';
+const danger = '#f87171';
+const warning = '#fb923c';
+const border = '#2a2a35';
+
+// ─── DASHBOARD CHARTS ───
+function initDashboardCharts() {
+  // Revenue Line
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: ['Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic','Ene','Feb'],
+      datasets: [{
+        label: 'Ingresos',
+        data: [62000,65000,71000,68000,74000,72000,78000,76000,80000,82000,80000,84320],
+        borderColor: accent,
+        backgroundColor: 'rgba(212,184,74,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: accent,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: border } },
+        y: { grid: { color: border }, ticks: { callback: v => '$' + (v/1000) + 'k' } }
+      }
+    }
+  });
+
+  // Membership Donut
+  new Chart(document.getElementById('membershipChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Básica','Premium','VIP'],
+      datasets: [{
+        data: [231, 198, 58],
+        backgroundColor: ['#2a2a35', accent, '#3ecf8e'],
+        borderColor: ['#1c1c23','#1c1c23','#1c1c23'],
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
+      }
+    }
+  });
+
+  // New members bar
+  new Chart(document.getElementById('newMembersChart'), {
+    type: 'bar',
+    data: {
+      labels: ['S1','S2','S3','S4','S5','S6','S7','S8'],
+      datasets: [{
+        label: 'Nuevos miembros',
+        data: [14,18,22,16,28,20,24,31],
+        backgroundColor: 'rgba(212,184,74,0.7)',
+        borderRadius: 6,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: border } }
+      }
+    }
+  });
+
+  // Attendance
+  new Chart(document.getElementById('attendanceChart'), {
+    type: 'line',
+    data: {
+      labels: ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
+      datasets: [{
+        label: 'Asistencia',
+        data: [142, 98, 154, 130, 167, 89, 42],
+        borderColor: success,
+        backgroundColor: 'rgba(62,207,142,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: success,
+        pointRadius: 4,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: border } }
+      }
+    }
+  });
+}
+
+let reportChartsInit = false;
+function initReportCharts() {
+  if (reportChartsInit) return;
+  reportChartsInit = true;
+
+  new Chart(document.getElementById('reportRevenueChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+      datasets: [
+        {
+          label: 'Ingresos',
+          data: [80000,84320,0,0,0,0,0,0,0,0,0,0],
+          backgroundColor: 'rgba(212,184,74,0.7)',
+          borderRadius: 6, borderSkipped: false
+        },
+        {
+          label: 'Meta',
+          data: [90000,90000,90000,90000,90000,90000,90000,90000,90000,90000,90000,90000],
+          type: 'line',
+          borderColor: 'rgba(248,113,113,0.5)',
+          borderDash: [6,4],
+          pointRadius: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { usePointStyle: true } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { grid: { color: border }, ticks: { callback: v => '$' + (v/1000) + 'k' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('reportMembChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Básica','Premium','VIP'],
+      datasets: [{
+        data: [231, 198, 58],
+        backgroundColor: ['#2a2a45', accent, success],
+        borderColor: '#1c1c23', borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { padding: 14, usePointStyle: true } } }
+    }
+  });
+
+  new Chart(document.getElementById('weeklyAttChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'],
+      datasets: [{
+        label: 'Asistencia promedio',
+        data: [142, 98, 154, 130, 167, 89, 42],
+        borderColor: info,
+        backgroundColor: 'rgba(96,165,250,0.1)',
+        pointBackgroundColor: info,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        r: {
+          grid: { color: border },
+          ticks: { display: false },
+          angleLines: { color: border },
+          pointLabels: { color: '#8a8a96', font: { size: 11 } }
+        }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+// ─── INIT ───
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initDashboardCharts, 100);
+});
+</script>
+</body>
+</html>
