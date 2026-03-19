@@ -1,0 +1,92 @@
+<div class="py-6 pb-20">
+  <!-- Cabecera con navegación -->
+  <div class="flex items-center gap-4 mb-6">
+    <button @click="goTo('diet')" class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-800 text-metroteal hover:bg-gray-700 border border-gray-700 transition-colors">
+      <span class="text-xl"><i class="fa-solid fa-arrow-left"></i></span>
+    </button>
+    <div>
+      <h1 class="text-3xl font-bold text-metroteal leading-none">Plan Definición</h1>
+      <p class="text-gray-400 text-sm mt-1">2200 Kcal • Alta en proteínas</p>
+    </div>
+  </div>
+
+  <!-- Selector de Días -->
+  <div class="flex gap-2 overflow-x-auto pb-4 mb-4 select-none" style="scrollbar-width: none;">
+    <button class="px-5 py-2 bg-metroteal text-black font-bold rounded-lg whitespace-nowrap shadow-md">Lunes</button>
+    <button class="px-5 py-2 bg-gray-800 text-gray-400 font-bold rounded-lg whitespace-nowrap border border-gray-700 hover:bg-gray-700">Martes</button>
+    <button class="px-5 py-2 bg-gray-800 text-gray-400 font-bold rounded-lg whitespace-nowrap border border-gray-700 hover:bg-gray-700">Miércoles</button>
+    <button class="px-5 py-2 bg-gray-800 text-gray-400 font-bold rounded-lg whitespace-nowrap border border-gray-700 hover:bg-gray-700">Jueves</button>
+    <button class="px-5 py-2 bg-gray-800 text-gray-400 font-bold rounded-lg whitespace-nowrap border border-gray-700 hover:bg-gray-700">Viernes</button>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 max-w-3xl mx-auto">
+
+    <!-- Desayuno -->
+    <div class="bg-metroteal text-black rounded-xl p-5 shadow-lg relative">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <span class="bg-black/20 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider text-white/90">Desayuno</span>
+          <h2 class="text-2xl font-bold leading-tight mt-2">Tortilla de Avena y Claras</h2>
+        </div>
+        <div class="text-4xl opacity-40"><i class="fa-solid fa-egg"></i></div>
+      </div>
+      
+      <div class="flex flex-wrap gap-2 mt-3 mb-5 font-bold text-xs opacity-90">
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-fire mr-1"></i> 450 Kcal</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-drumstick-bite mr-1"></i> 30g Prot</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-bread-slice mr-1"></i> 40g Carb</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-droplet mr-1"></i> 10g Grasas</span>
+      </div>
+
+      <!-- Acciones -->
+      <button onclick="showRecipeModal('tortilla')" class="w-full bg-black/80 hover:bg-black text-metroteal py-3 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors">
+        <span><i class="fa-solid fa-book-open"></i></span> Ver Receta y Preparación
+      </button>
+    </div>
+
+    <!-- Almuerzo -->
+    <div class="bg-metroteal text-black rounded-xl p-5 shadow-lg relative">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <span class="bg-black/20 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider text-white/90">Almuerzo</span>
+          <h2 class="text-2xl font-bold leading-tight mt-2">Pollo al Curry con Arroz</h2>
+        </div>
+        <div class="text-4xl opacity-40"><i class="fa-solid fa-bowl-rice"></i></div>
+      </div>
+      
+      <div class="flex flex-wrap gap-2 mt-3 mb-5 font-bold text-xs opacity-90">
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-fire mr-1"></i> 650 Kcal</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-drumstick-bite mr-1"></i> 45g Prot</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-bread-slice mr-1"></i> 60g Carb</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-droplet mr-1"></i> 15g Grasas</span>
+      </div>
+
+      <button onclick="showRecipeModal('pollo')" class="w-full bg-black/80 hover:bg-black text-metroteal py-3 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors">
+        <span><i class="fa-solid fa-book-open"></i></span> Ver Receta y Preparación
+      </button>
+    </div>
+
+    <!-- Merienda / Snack -->
+    <div class="bg-metroteal text-black rounded-xl p-5 shadow-lg relative">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <span class="bg-black/20 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider text-white/90">Snack PM</span>
+          <h2 class="text-2xl font-bold leading-tight mt-2">Yogur Griego con Frutos Rojos</h2>
+        </div>
+        <div class="text-4xl opacity-40"><i class="fa-solid fa-apple-whole"></i></div>
+      </div>
+      
+      <div class="flex flex-wrap gap-2 mt-3 mb-5 font-bold text-xs opacity-90">
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-fire mr-1"></i> 200 Kcal</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-drumstick-bite mr-1"></i> 15g Prot</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-bread-slice mr-1"></i> 10g Carb</span>
+        <span class="bg-white/30 px-2 py-1 rounded backdrop-blur-sm"><i class="fa-solid fa-droplet mr-1"></i> 5g Grasas</span>
+      </div>
+
+      <button onclick="showRecipeModal('yogur')" class="w-full bg-black/80 hover:bg-black text-metroteal py-3 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors">
+        <span><i class="fa-solid fa-book-open"></i></span> Ver Receta y Preparación
+      </button>
+    </div>
+
+  </div>
+</div>

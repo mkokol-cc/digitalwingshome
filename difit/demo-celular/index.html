@@ -1,1 +1,429 @@
+<!DOCTYPE html>
+<html lang="es" class="bg-black">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gym Dashboard - Metro UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Kanit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { 
+            'sans': ['Kanit', 'sans-serif'],
+            'segoe': ['Kanit', 'sans-serif'] 
+          },
+          colors: {
+            metroblue:   '#0078D7',
+            metrogreen:  '#107C10',
+            metrored:    '#E81123',
+            metroyellow: '#FFB900',
+            metroorange: '#E05D06',
+            metropurple: '#5C2D91',
+            metroteal:   '#00B7C3',
+            metrolime:   '#BAD80A',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .tile:active { transform: scale(0.96); transition: transform 0.12s; }
+
+    /* Ocultar barras de desplazamiento (scrollbars) en todo el sitio */
+    * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    *::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    /* Ocultar flechas (spinners) en inputs numéricos */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield; /* Firefox */
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-black text-white font-sans antialiased">
+
+  <!-- Header fijo -->
+  <header class="fixed top-0 inset-x-0 z-20 bg-black/80 backdrop-blur-sm border-b border-white/10">
+    <div class="px-4 py-3 flex items-center justify-between">
+      <div class="text-xl font-semibold tracking-tight">Mi Gimnasio</div>
+      <div class="text-sm text-gray-400">Matías Juan</div>
+    </div>
+  </header>
+
+  <div x-data="app()" x-init="init()" class="pt-16 min-h-screen flex flex-col">
+
+    <!-- Barra de navegación superior (tiles) - solo visible en home -->
+    <div x-show="page === 'home'" class="px-3 sm:px-4 pb-6">
+      <div class="grid grid-cols-2 gap-3 sm:gap-4 max-w-3xl mx-auto">
+
+        <button @click="goTo('checkin')" type="button"
+          class="tile col-span-2 aspect-[2/1] bg-metroblue rounded-xl flex flex-col items-center justify-center text-center">
+          <div class="text-5xl sm:text-6xl mb-2"><i class="fa-solid fa-right-to-bracket text-white"></i></div>
+          <div class="text-3xl sm:text-4xl font-bold tracking-tight">Check-in</div>
+          <div class="text-lg sm:text-xl opacity-90 mt-1">Registrar entrada</div>
+        </button>
+
+        <!--se cambio esto pero bueno nose col-span-2 a col-span-1-->
+        <button @click="goTo('progress')" type="button"
+          class="tile col-span-1 sm:col-span-1 aspect-square bg-metrogreen rounded-xl flex flex-col items-center justify-center">
+          <div class="text-5xl mb-3"><i class="fa-solid fa-chart-line text-white"></i></div>
+          <div class="text-2xl font-bold">Mi Progreso</div>
+        </button>
+
+        <button @click="goTo('routines')" type="button"
+          class="tile col-span-1 sm:col-span-1 aspect-square bg-metroorange text-white rounded-xl flex flex-col items-center justify-center">
+          <div class="text-5xl mb-3"><i class="fa-solid fa-dumbbell text-white"></i></div>
+          <div class="text-2xl font-bold">Rutinas</div>
+        </button>
+
+        <button @click="goTo('diet')" type="button"
+          class="tile col-span-1 aspect-square bg-metroteal rounded-xl flex flex-col items-center justify-center text-center">
+          <div class="text-4xl mb-2"><i class="fa-solid fa-carrot text-white"></i></div>
+          <div class="text-xl font-semibold">Dieta</div>
+        </button>
+
+        <button @click="goTo('membership')" type="button"
+          class="tile col-span-1 aspect-square bg-metropurple rounded-xl flex flex-col items-center justify-center">
+          <div class="text-4xl mb-2"><i class="fa-solid fa-id-card text-white"></i></div>
+          <div class="text-xl font-semibold">Membresía</div>
+        </button>
+
+        <button @click="goTo('settings')" type="button"
+          class="tile col-span-1 aspect-square bg-gray-800 hover:bg-gray-700 rounded-xl flex flex-col items-center justify-center text-gray-300">
+          <div class="text-4xl mb-2"><i class="fa-solid fa-gear text-white"></i></div>
+          <div class="text-lg font-medium">Ajustes</div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Área de contenido principal -->
+    <main class="flex-1 px-6 sm:px-4 md:px-6 pb-12">
+      <div x-show="loading" class="text-center py-20 text-gray-400">
+        Cargando...
+      </div>
+
+      <div x-show="!loading && page !== 'home'" x-html="content" class="max-w-3xl mx-auto"></div>
+
+      <!-- Botón volver (solo cuando no estamos en home) -->
+      <div x-show="page !== 'home'" class="mt-6 text-center">
+        <button @click="goTo('home')" 
+          class="inline-block px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-full text-lg font-medium">
+          ← Volver al inicio
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 text-xs text-gray-500 bg-black/60 border-t border-white/5 mt-auto">
+      © 2026 – Gym Metro UI
+    </footer>
+
+  </div>
+
+  <script>
+    function app() {
+      return {
+        page: 'home',
+        content: '',
+        loading: false,
+
+        async init() {
+          // Opcional: podrías cargar 'home' también como fragmento si quisieras
+          // Por ahora dejamos los tiles estáticos en index
+        },
+
+        async goTo(pageName) {
+          if (pageName === this.page) return;
+          if (pageName === 'home') {
+            this.page = 'home';
+            this.content = '';
+            return;
+          }
+
+          this.loading = true;
+          this.page = pageName;
+          this.content = '';
+
+          try {
+            const resp = await fetch(`${pageName}.html`);
+            if (!resp.ok) throw new Error('No se encontró la vista');
+            const html = await resp.text();
+            this.content = html;
+            
+            // Inicializar gráficos si es la página de progreso
+            if (pageName === 'progress') {
+              setTimeout(() => {
+                if (window.initProgressCharts) window.initProgressCharts();
+              }, 300);
+            }
+
+          } catch (err) {
+            this.content = `<div class="text-red-400 text-center py-10">
+              Error al cargar ${pageName}.html<br>${err.message}
+            </div>`;
+          } finally {
+            this.loading = false;
+          }
+        }
+      }
+    }
+
+    // Función global para inicializar gráficos de progreso
+    // Guardamos referencias para destruirlos si se recarga la vista
+    window.progressCharts = {};
+
+    window.initProgressCharts = () => {
+      const ctxWeight = document.getElementById('weightChart');
+      const ctxStrength = document.getElementById('strengthChart');
+
+      // Limpiar instancias previas si existen (para evitar errores de canvas en uso)
+      if (window.progressCharts.weight) { window.progressCharts.weight.destroy(); }
+      if (window.progressCharts.strength) { window.progressCharts.strength.destroy(); }
+
+      if (ctxWeight) {
+        window.progressCharts.weight = new Chart(ctxWeight, {
+          type: 'line',
+          data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+            datasets: [{
+              label: 'Peso Corporal (kg)',
+              data: [78, 77.5, 76.8, 76.2, 75.5, 75],
+              borderColor: '#107C10', // metrogreen
+              backgroundColor: 'rgba(16, 124, 16, 0.1)',
+              borderWidth: 3,
+              tension: 0.4,
+              pointRadius: 4,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { grid: { color: '#333' }, ticks: { color: '#aaa' } },
+              x: { grid: { display: false }, ticks: { color: '#aaa' } }
+            }
+          }
+        });
+      }
+
+      if (ctxStrength) {
+        window.progressCharts.strength = new Chart(ctxStrength, {
+          type: 'bar',
+          data: {
+            labels: ['S1', 'S2', 'S3', 'S4'],
+            datasets: [{
+              label: 'Press Banca (kg)',
+              data: [60, 65, 65, 70],
+              backgroundColor: '#0078D7', // metroblue
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { grid: { color: '#333' }, ticks: { color: '#aaa' } },
+              x: { grid: { display: false }, ticks: { color: '#aaa' } }
+            }
+          }
+        });
+      }
+    };
+
+    // Función para abrir el modal de registro de series (SweetAlert2)
+    window.openLogModal = async (exerciseName, numSeries, cardId) => {
+      // Generamos el HTML de los inputs dinámicamente según las series
+      let htmlContent = `
+        <div class="flex justify-center gap-3 mb-2 text-sm text-gray-400 font-medium">
+          <span class="w-8 text-center">#</span>
+          <span class="w-24 text-center">Carga</span>
+          <span class="w-24 text-center">Reps</span>
+        </div>
+        <div class="space-y-2">
+      `;
+
+      for (let i = 1; i <= numSeries; i++) {
+        htmlContent += `
+          <div class="flex justify-center items-center gap-3">
+            <span class="w-8 font-bold text-metroorange text-center text-lg">${i}</span>
+            <input id="swal-kg-${i}" type="number" placeholder="kg" 
+              class="w-24 bg-gray-800 border border-gray-600 rounded p-2 text-white text-center focus:border-metroorange focus:outline-none placeholder-gray-500 text-sm">
+            <input id="swal-reps-${i}" type="number" placeholder="reps" 
+              class="w-24 bg-gray-800 border border-gray-600 rounded p-2 text-white text-center focus:border-metroorange focus:outline-none placeholder-gray-500 text-sm">
+          </div>
+        `;
+      }
+      htmlContent += '</div>';
+
+      const { value: formValues } = await Swal.fire({
+        title: `<span class="text-metroorange">${exerciseName}</span>`,
+        html: htmlContent,
+        background: '#111', // Fondo oscuro
+        color: '#fff',
+        showCancelButton: true,
+        confirmButtonText: 'Guardar Progreso',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#E05D06', // metroorange
+        cancelButtonColor: '#333',
+        focusConfirm: false,
+        customClass: {
+          popup: 'border border-gray-800 rounded-2xl'
+        },
+        preConfirm: () => {
+          // Recolectar datos de los inputs
+          const results = [];
+          for (let i = 1; i <= numSeries; i++) {
+            const kg = document.getElementById(`swal-kg-${i}`).value;
+            const reps = document.getElementById(`swal-reps-${i}`).value;
+            if (kg || reps) { // Solo guardar si escribió algo
+              results.push({ serie: i, kg, reps });
+            }
+          }
+          return results;
+        }
+      });
+
+      if (formValues && formValues.length > 0) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Registrado!',
+          text: `Se han guardado ${formValues.length} series.`,
+          background: '#111',
+          color: '#fff',
+          confirmButtonColor: '#E05D06'
+        });
+        
+        // Actualizar visualmente la tarjeta si se pasa un ID
+        if (cardId) {
+          const card = document.getElementById(cardId);
+          if (card) {
+            // Cambiar fondo de naranja a gris oscuro (estado completado)
+            card.classList.remove('bg-metroorange');
+            card.classList.add('bg-gray-900', 'border', 'border-gray-700');
+
+            // Cambiar el botón de acción
+            const actionBtn = card.querySelector('button[onclick*="openLogModal"]');
+            if (actionBtn) {
+              actionBtn.className = "col-span-2 bg-metrogreen text-white py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 mt-1 shadow-md transition-colors";
+              actionBtn.innerHTML = '<span><i class="fa-solid fa-check"></i></span> Completado';
+            }
+          }
+        }
+      }
+    };
+
+    // Función para mostrar modal de Técnica (Video)
+    window.showTechniqueModal = (exerciseName) => {
+      Swal.fire({
+        title: `<span class="text-metroorange">Técnica: ${exerciseName}</span>`,
+        html: `
+          <div class="aspect-video w-full bg-black rounded-lg overflow-hidden mb-4 relative flex items-center justify-center">
+             <!-- Simulación de Video -->
+             <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-40">
+             <i class="fa-solid fa-circle-play text-6xl text-white z-10 opacity-80 hover:scale-110 transition-transform cursor-pointer"></i>
+          </div>
+          <p class="text-gray-300 text-sm">Asegura mantener la postura correcta y controlar la fase excéntrica del movimiento.</p>
+        `,
+        background: '#111',
+        color: '#fff',
+        confirmButtonColor: '#E05D06',
+        confirmButtonText: 'Cerrar',
+        customClass: { popup: 'border border-gray-800 rounded-2xl' }
+      });
+    };
+
+    // Función para mostrar modal de Equipamiento
+    window.showEquipmentModal = (title, description) => {
+       Swal.fire({
+        title: `<span class="text-metroorange">Equipamiento</span>`,
+        html: `
+          <div class="w-full h-48 bg-gray-800 rounded-lg overflow-hidden mb-4">
+             <img src="https://images.milanuncios.com/api/v1/ma-ad-media-pro/images/57e1d9ba-bb12-413a-8f11-7c11f943921b?rule=hw396_70" class="w-full h-full object-cover opacity-80">
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">${title}</h3>
+          <p class="text-gray-400 text-sm">${description}</p>
+        `,
+        background: '#111',
+        color: '#fff',
+        confirmButtonColor: '#E05D06',
+        confirmButtonText: 'Entendido',
+        customClass: { popup: 'border border-gray-800 rounded-2xl' }
+      });
+    };
+
+    // Base de datos de recetas (solución para evitar errores de texto largo en HTML)
+    const RECIPES_DB = {
+      'tortilla': {
+        title: 'Tortilla de Avena',
+        ingredients: '50g de Avena, 6 Claras de huevo, Canela al gusto, Edulcorante',
+        prep: 'Mezclar las claras con la avena y especias en un bowl. Verter en una sartén antiadherente precalentada. Cocinar 3 minutos por lado hasta que esté dorada.'
+      },
+      'pollo': {
+        title: 'Pollo al Curry',
+        ingredients: '150g Pechuga de pollo, 100g Arroz basmati, 100ml Leche de coco light, Curry en polvo, Sal y pimienta',
+        prep: 'Cortar el pollo en cubos y saltear. Agregar la leche de coco y el curry. Cocinar a fuego lento 10 min. Servir acompañado del arroz hervido.'
+      },
+      'yogur': {
+        title: 'Yogur con Frutos',
+        ingredients: '1 Yogur Griego natural 0%, 50g Frutos rojos mixtos, 10g Nueces picadas, Stevia opcional',
+        prep: 'Servir el yogur en un bowl frío. Lavar los frutos rojos y colocarlos encima junto con las nueces troceadas. Endulzar si es necesario.'
+      }
+    };
+
+    // Función para mostrar modal de Receta (Dieta)
+    window.showRecipeModal = (key) => {
+      const data = RECIPES_DB[key];
+      if (!data) return; // Si no existe la receta, no hace nada
+      
+      const ingredientsList = data.ingredients.split(',').map(i => `<li class="mb-1">${i.trim()}</li>`).join('');
+
+      Swal.fire({
+        title: `<span class="text-metroteal">${data.title}</span>`,
+        html: `
+          <div class="text-left">
+             <div class="bg-gray-900 rounded-lg p-4 mb-4 border border-gray-700">
+               <h4 class="text-white font-bold mb-3 text-sm uppercase tracking-wide border-b border-gray-700 pb-2"><i class="fa-solid fa-basket-shopping text-metroteal mr-2"></i>Ingredientes</h4>
+               <ul class="list-disc list-inside text-gray-300 text-sm pl-1 marker:text-metroteal">${ingredientsList}</ul>
+             </div>
+             <div class="bg-gray-900 rounded-lg p-4 border border-gray-700">
+               <h4 class="text-white font-bold mb-3 text-sm uppercase tracking-wide border-b border-gray-700 pb-2"><i class="fa-solid fa-fire-burner text-metroteal mr-2"></i>Preparación</h4>
+               <p class="text-gray-300 text-sm leading-relaxed">${data.prep}</p>
+             </div>
+          </div>
+        `,
+        background: '#111',
+        color: '#fff',
+        confirmButtonColor: '#00B7C3', // metroteal
+        confirmButtonText: '¡A cocinar!',
+        customClass: { popup: 'border border-gray-800 rounded-2xl' }
+      });
+    };
+  </script>
+
+</body>
+</html>

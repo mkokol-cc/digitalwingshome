@@ -1,0 +1,95 @@
+<div class="py-6 pb-20">
+  <!-- Cabecera con navegación -->
+  <div class="flex items-center gap-4 mb-8">
+    <button @click="goTo('routines')" class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-800 text-metroorange hover:bg-gray-700 border border-gray-700 transition-colors">
+      <span class="text-xl"><i class="fa-solid fa-arrow-left"></i></span>
+    </button>
+    <div>
+      <h1 class="text-3xl font-bold text-metroorange leading-none">Tren Superior</h1>
+      <p class="text-gray-400 text-sm mt-1">Fuerza • 4 Ejercicios principales</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 max-w-3xl mx-auto">
+
+    <!-- Ejercicio 1 -->
+    <div id="card-ex1" class="bg-metroorange text-white rounded-xl p-5 shadow-lg relative transition-colors duration-500">
+      <div class="mb-4 pr-10">
+        <h2 class="text-2xl font-bold leading-tight">Press de Banca</h2>
+        <p class="text-sm font-semibold opacity-70 mt-1">Pecho • Barra Olímpica</p>
+        
+        <div class="flex flex-wrap gap-3 mt-3 font-bold text-sm">
+          <span class="bg-black/20 px-2 py-1 rounded">4 Series</span>
+          <span class="bg-black/20 px-2 py-1 rounded">5-8 Reps</span>
+          <span class="bg-black/20 px-2 py-1 rounded">RPE 8</span>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <button onclick="showTechniqueModal('Press de Banca')" class="bg-white/40 hover:bg-white/60 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors">
+          <i class="fa-solid fa-circle-play mr-1"></i> Ver Técnica
+        </button>
+        <button onclick="showEquipmentModal('Banco Plano y Barra', 'Necesitarás un banco plano, una barra olímpica y discos de peso adecuados a tu nivel.')" class="bg-white/40 hover:bg-white/60 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors">
+          <i class="fa-solid fa-dumbbell mr-1"></i> Equipamiento
+        </button>
+        <button onclick="openLogModal('Press de Banca', 4, 'card-ex1')" class="col-span-2 bg-black text-metroorange hover:bg-gray-900 py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 mt-1 shadow-md transition-colors">
+          <span><i class="fa-solid fa-check"></i></span> Marcar Realizado
+        </button>
+      </div>
+    </div>
+
+    <!-- Ejercicio 2 -->
+    <div id="card-ex2" class="bg-metroorange text-white rounded-xl p-5 shadow-lg relative transition-colors duration-500">
+      <div class="mb-4 pr-10">
+        <h2 class="text-2xl font-bold leading-tight">Press Militar</h2>
+        <p class="text-sm font-semibold opacity-70 mt-1">Hombros • Mancuernas</p>
+        
+        <div class="flex flex-wrap gap-3 mt-3 font-bold text-sm">
+          <span class="bg-black/20 px-2 py-1 rounded">3 Series</span>
+          <span class="bg-black/20 px-2 py-1 rounded">8-10 Reps</span>
+          <span class="bg-black/20 px-2 py-1 rounded">RPE 9</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <button onclick="showTechniqueModal('Press Militar')" class="bg-white/40 hover:bg-white/60 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors">
+          <i class="fa-solid fa-circle-play mr-1"></i> Ver Técnica
+        </button>
+        <button onclick="showEquipmentModal('Mancuernas y Banco', 'Utiliza un banco ajustable con respaldo a 90 grados y un par de mancuernas.')" class="bg-white/40 hover:bg-white/60 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors">
+          <i class="fa-solid fa-dumbbell mr-1"></i> Equipamiento
+        </button>
+        <button onclick="openLogModal('Press Militar', 3, 'card-ex2')" class="col-span-2 bg-black text-metroorange hover:bg-gray-900 py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 mt-1 shadow-md transition-colors">
+          <span><i class="fa-solid fa-check"></i></span> Marcar Realizado
+        </button>
+      </div>
+    </div>
+
+    <!-- Ejercicio 3 -->
+    <div id="card-ex3" class="bg-metroorange text-white rounded-xl p-5 shadow-lg relative transition-colors duration-500">
+      <div class="mb-4 pr-10">
+        <h2 class="text-2xl font-bold leading-tight">Fondos en Paralelas</h2>
+        <p class="text-sm font-semibold opacity-70 mt-1">Tríceps • Peso corporal</p>
+        
+        <div class="flex flex-wrap gap-3 mt-3 font-bold text-sm">
+          <span class="bg-black/20 px-2 py-1 rounded">3 Series</span>
+          <span class="bg-black/20 px-2 py-1 rounded">Al fallo</span>
+          <span class="bg-black/20 px-2 py-1 rounded">Lastre opcional</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <button onclick="showTechniqueModal('Fondos')" class="bg-white/40 hover:bg-white/60 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors">
+          <i class="fa-solid fa-circle-play mr-1"></i> Ver Técnica
+        </button>
+        <button onclick="showEquipmentModal('Barras Paralelas', 'Estación de fondos o barras paralelas. Opcionalmente cinturón para lastre.')" class="bg-white/40 hover:bg-white/60 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors">
+          <i class="fa-solid fa-dumbbell mr-1"></i> Equipamiento
+        </button>
+        <button onclick="openLogModal('Fondos en Paralelas', 3, 'card-ex3')" class="col-span-2 bg-black text-metroorange hover:bg-gray-900 py-3.5 rounded-lg font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 mt-1 shadow-md transition-colors">
+          <span><i class="fa-solid fa-check"></i></span> Marcar Realizado
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

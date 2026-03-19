@@ -1,0 +1,71 @@
+<div class="py-6">
+  <div class="flex items-center justify-between mb-8 px-2">
+    <h1 class="text-5xl font-bold text-metrogreen">Mi Progreso</h1>
+    <!-- Botón flotante o de acción para fotos -->
+    <button @click="goTo('progress_photos')" type="button" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-full border border-gray-700 shadow-lg transition-transform active:scale-90">
+      <span class="text-2xl"><i class="fa-solid fa-camera"></i></span>
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
+    
+    <!-- Tarjeta: Evolución de Peso -->
+    <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-white">Peso Corporal</h2>
+        <span class="text-metrogreen font-bold text-lg">75.0 kg</span>
+      </div>
+      <div class="relative h-64 w-full">
+        <canvas id="weightChart"></canvas>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 text-center">Últimos 6 meses</p>
+    </div>
+
+    <!-- Tarjeta: Evolución de Fuerza -->
+    <div class="bg-gray-900/80 border border-gray-800 rounded-xl p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-white">Rendimiento (Fuerza)</h2>
+        <span class="text-metroblue font-bold text-lg">PR: 70 kg</span>
+      </div>
+      <div class="relative h-48 w-full">
+        <canvas id="strengthChart"></canvas>
+      </div>
+      <p class="text-xs text-gray-500 mt-2 text-center">Este mes - Press de Banca</p>
+    </div>
+
+    <!-- Botón grande para añadir nueva medición -->
+    <button class="w-full py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-xl flex items-center justify-center gap-3 transition-colors">
+      <span class="text-2xl"><i class="fa-solid fa-scale-balanced"></i></span>
+      <span class="text-lg font-semibold">Más estadísticas</span>
+    </button>
+
+    <!-- Historial Resumido -->
+    <div class="mt-4">
+      <h3 class="text-lg font-bold text-gray-400 mb-3 px-2 uppercase text-xs tracking-wider">Historial Reciente</h3>
+      <div class="space-y-2">
+        <div class="flex justify-between items-center bg-black border border-gray-800 p-4 rounded-lg">
+          <div>
+            <p class="font-bold text-white">Entrenamiento de Pecho</p>
+            <p class="text-sm text-gray-500">Ayer • 45 min</p>
+          </div>
+          <div class="text-right">
+            <span class="block text-metrogreen font-bold">Completado</span>
+            <span class="text-xs text-gray-500">Vol: 2400kg</span>
+          </div>
+        </div>
+        
+        <div class="flex justify-between items-center bg-black border border-gray-800 p-4 rounded-lg">
+          <div>
+            <p class="font-bold text-white">Registro de Peso</p>
+            <p class="text-sm text-gray-500">Hace 3 días</p>
+          </div>
+          <div class="text-right">
+            <span class="block text-white font-bold">75.5 kg</span>
+            <span class="text-xs text-red-500">▼ -0.7kg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

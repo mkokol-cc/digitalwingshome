@@ -1,0 +1,96 @@
+<div class="py-6 pb-20">
+  <!-- Cabecera con navegación -->
+  <div class="flex items-center gap-4 mb-6 px-2">
+    <button @click="goTo('progress')" class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-800 text-metrogreen hover:bg-gray-700 border border-gray-700 transition-colors">
+      <span class="text-xl"><i class="fa-solid fa-arrow-left"></i></span>
+    </button>
+    <h1 class="text-3xl font-bold text-metrogreen">Galería Física</h1>
+  </div>
+
+  <!-- Botón de Subida -->
+  <div class="px-2 mb-8">
+    <button class="w-full py-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-xl flex items-center justify-center gap-3 transition-colors text-white shadow-lg active:scale-95 transform transition-transform">
+      <span class="text-2xl"><i class="fa-solid fa-upload"></i></span>
+      <span class="text-lg font-semibold">Subir Fotos</span>
+    </button>
+  </div>
+
+  <!-- Listado de Acordeones (Fechas) -->
+  <!-- Usamos x-data para controlar qué item está abierto (activeItem) -->
+  <div class="space-y-4 px-2" x-data="{ activeItem: null }">
+    
+    <!-- Item 1 (Más reciente) -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden"
+         x-data="{
+           photoIdx: 0,
+           labels: ['Pose Frontal', 'Pose Perfil', 'Pose Espalda'],
+           photos: [
+             'cuerpo-frente.png', 
+             'cuerpo-perfil.png', 
+             'cuerpo-espalda.png'
+           ]
+         }">
+      <!-- Cabecera del Acordeón -->
+      <button @click="activeItem === 1 ? activeItem = null : activeItem = 1" class="w-full flex justify-between items-center p-5 text-left bg-gray-800/40 hover:bg-gray-800 transition-colors">
+        <span class="text-xl font-bold text-white">12 Jul 2025</span>
+        <!-- Flecha indicadora que rota -->
+        <span class="text-metrogreen text-xl transform transition-transform duration-200" :class="activeItem === 1 ? 'rotate-180' : ''"><i class="fa-solid fa-caret-down"></i></span>
+      </button>
+      
+      <!-- Contenido Desplegable -->
+      <div x-show="activeItem === 1" x-transition.opacity.duration.300ms class="border-t border-gray-800 bg-black relative">
+        <div class="relative h-[400px] w-full flex items-center justify-center bg-gray-950">
+            
+            <!-- Flecha Anterior -->
+            <button @click="photoIdx = (photoIdx === 0) ? photos.length - 1 : photoIdx - 1" class="absolute left-0 h-full px-4 text-white/50 hover:text-white hover:bg-black/20 z-10 text-4xl font-light focus:outline-none">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- Imagen Dinámica -->
+            <img :src="photos[photoIdx]" alt="Progreso" class="h-full w-full object-cover opacity-90 transition-opacity duration-300">
+
+            <!-- Etiqueta de la pose Dinámica -->
+            <div class="absolute bottom-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border border-white/10" x-text="labels[photoIdx]">
+            </div>
+
+            <!-- Flecha Siguiente -->
+            <button @click="photoIdx = (photoIdx === photos.length - 1) ? 0 : photoIdx + 1" class="absolute right-0 h-full px-4 text-white/50 hover:text-white hover:bg-black/20 z-10 text-4xl font-light focus:outline-none">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 2 (Antiguo) -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden"
+         x-data="{
+           photoIdx: 0,
+           labels: ['Pose Frontal', 'Pose Perfil', 'Pose Espalda'],
+           photos: [
+             'cuerpo-frente.png', 
+             'cuerpo-perfil.png', 
+             'cuerpo-espalda.png'
+           ]
+         }">
+      <button @click="activeItem === 2 ? activeItem = null : activeItem = 2" class="w-full flex justify-between items-center p-5 text-left bg-gray-800/40 hover:bg-gray-800 transition-colors">
+        <span class="text-xl font-bold text-gray-400">15 Jun 2025</span>
+        <span class="text-gray-500 text-xl transform transition-transform duration-200" :class="activeItem === 2 ? 'rotate-180' : ''"><i class="fa-solid fa-caret-down"></i></span>
+      </button>
+      
+      <div x-show="activeItem === 2" x-transition.opacity.duration.300ms class="border-t border-gray-800 bg-black relative">
+        <div class="relative h-[400px] w-full flex items-center justify-center bg-gray-950">
+            <button @click="photoIdx = (photoIdx === 0) ? photos.length - 1 : photoIdx - 1" class="absolute left-0 h-full px-4 text-white/50 hover:text-white hover:bg-black/20 z-10 text-4xl font-light focus:outline-none"><i class="fa-solid fa-chevron-left"></i></button>
+            
+            <!-- Imagen dinámica -->
+            <img :src="photos[photoIdx]" class="h-full w-full object-cover opacity-60 grayscale transition-opacity duration-300">
+            
+            <!-- Etiqueta dinámica -->
+            <div class="absolute bottom-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border border-white/10" x-text="labels[photoIdx]"></div>
+
+            <button @click="photoIdx = (photoIdx === photos.length - 1) ? 0 : photoIdx + 1" class="absolute right-0 h-full px-4 text-white/50 hover:text-white hover:bg-black/20 z-10 text-4xl font-light focus:outline-none"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

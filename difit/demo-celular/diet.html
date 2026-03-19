@@ -1,0 +1,41 @@
+<div class="py-8">
+  <h1 class="text-5xl font-bold text-metroteal mb-8 text-center">Planes de Dieta</h1>
+
+  <div class="grid grid-cols-2 gap-3 max-w-3xl mx-auto">
+    <!-- Dieta 1 -->
+    <button @click="goTo('diet_detail')" type="button" class="tile col-span-2 bg-metroteal rounded-xl p-4 text-left flex justify-between items-center transform transition-transform active:scale-95">
+      <div>
+        <h2 class="text-xl font-bold">Dieta de Definición</h2>
+        <p class="text-sm opacity-90 mt-1">Plan hipocalórico para maximizar la pérdida de grasa.</p>
+        <div class="inline-block bg-black/20 text-white text-xs font-semibold px-3 py-1 rounded-full mt-2">
+          Tipo: Definición
+        </div>
+      </div>
+      <div class="text-4xl opacity-80"><i class="fa-solid fa-bowl-food text-white"></i></div>
+    </button>
+
+    <!-- Dieta 2 -->
+    <button type="button" class="tile col-span-2 bg-metroteal rounded-xl p-4 text-left flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-bold">Dieta de Volumen</h2>
+        <p class="text-sm opacity-90 mt-1">Plan hipercalórico para ganancia de masa muscular.</p>
+        <div class="inline-block bg-black/20 text-white text-xs font-semibold px-3 py-1 rounded-full mt-2">
+          Tipo: Musculación
+        </div>
+      </div>
+      <div class="text-4xl opacity-80"><i class="fa-solid fa-drumstick-bite text-white"></i></div>
+    </button>
+
+    <!-- Dieta 3 -->
+    <button type="button" class="tile col-span-2 bg-metroteal rounded-xl p-4 text-left flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-bold">Dieta de Mantenimiento</h2>
+        <p class="text-sm opacity-90 mt-1">Plan equilibrado para mantener tu peso y composición.</p>
+        <div class="inline-block bg-black/20 text-white text-xs font-semibold px-3 py-1 rounded-full mt-2">
+          Tipo: Mantenimiento
+        </div>
+      </div>
+      <div class="text-4xl opacity-80"><i class="fa-solid fa-scale-balanced text-white"></i></div>
+    </button>
+  </div>
+</div>
